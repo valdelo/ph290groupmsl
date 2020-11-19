@@ -26,7 +26,7 @@ Source : https://data.chhs.ca.gov/dataset/infectious-disease
 
 ```{r}
 #Calling the dataset and clearing missing data :
-data <- read.csv("idb_odp_2001-2018 (1) (1).csv")
+data_id <- read.csv("idb_odp_2001-2018 (1) (1).csv")
 ```
 
 
