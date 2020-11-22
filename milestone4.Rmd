@@ -119,5 +119,47 @@ IDtable1 <- id_data %>% mutate(region = case_when(
 
 #it worked new column formed  called "group" on ID_table1
 ```
+```{r}
+# Creating the second variable "ID_type"
+# Our group decided to create the seven following groups:
+parasitic <- c("Amebiasis","Babesiosis", "Cryptosporidiosis", "Cyclosporiasis",
+"Cysticercosis or Taeniasis", "Malaria", "Giardiasis", "Trichinosis")
+toxin_related <- c("Botulism, Foodborne","Botulism, Other", "Botulism, Wound",
+"Ciguatera Fish Poisoning", "Domoic Acid Poisoning","Paralytic Shellfish
+Poisoning", "Scombroid Fish Poisoning") 
+viral <- c("Chikungunya Virus Infection", "Dengue Virus Infection","Flavivirus
+Infection of Undetermined Species","Hantavirus Infection","Hepatitis E acute
+infection","Rabies, human","Yellow Fever", "Yersiniosis","Zika Virus Infection") 
+prions <- c("Creutzfeldt-Jakob Disease and other Transmissible Spongiform
+Encephalopathies")
+fungal <- c("Coccidioidomycosis")
+bacterial <- c("Anaplasmosis", "Anaplasmosis and Ehrlichiosis", "Anthrax",
+"Brucellosis", "Campylobacteriosis","Cholera","E. coli O157","E. coli Other STEC
+(non-O157)", "Legionellosis","Leprosy (Hansen's Disease)", "Leptospirosis",
+"Listeriosis", "Lyme Disease","Plague, human","Q Fever","Spotted Fever
+Rickettsiosis", "Streptococcal Infection (cases in food and dairy workers)",
+"Ehrlichiosis", "Psittacosis", "Salmonellosis", "Shigellosis", "Tularemia",
+"Typhoid Fever", "Paratyphoid Fever", "Typhus Fever", "Relapsing Fever", "Shiga
+toxin-producing E. coli (STEC) without Hemolytic Uremic Syndrome (HUS)",
+"Vibrio Infection (non-Cholera)", "Shiga Toxin Positive Feces (without culture
+confirmation)")
+infectious_complications <- c("Hemolytic Uremic Syndrome (HUS) without evidence
+of Shiga toxin-producing E. coli (STEC)","Hemolytic Uremic Syndrome (HUS)", 
+"Shiga toxin-producing E. coli (STEC) with Hemolytic Uremic Syndrome (HUS)")
+
+# now I will create a new table naming it IDtable2 with new column ID_type
+IDtable2 <- IDtable1 %>% mutate(ID_type = case_when(
+  disease %in% parasitic ~ "Parasitic",
+  disease %in% toxin_related ~ "Toxin_related",
+  disease %in% viral ~ "Viral",
+  disease %in% prions ~ "Prions",
+  disease %in% fungal ~ "Fungal",
+  disease %in% bacterial ~ "Bacterial",
+  disease %in% infectious_complications ~ "ID_complication",
+  TRUE ~ NA_character_
+)) %>%
+  drop_na(ID_type)
+
+```
 
 
