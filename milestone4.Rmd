@@ -1,6 +1,6 @@
 ---
 title: "milestone 4"
-author: "Lourdes Mai and Sandya"
+author: "Sandya Krishna, Mai sedki, Lourdes Valdez"
 date: "11/16/2020"
 output: pdf_document
 ---
@@ -23,10 +23,36 @@ We will use :
 Dataset: Infectious Diseases by County, Year and Sex (in California) 2001-2018
 Source : https://data.chhs.ca.gov/dataset/infectious-disease
 
+Step 1 : Calling dataset and cleaning data 
 
 ```{r}
-#Calling the dataset and clearing missing data and call dataframe data_id:
-data_id <- read.csv("idb_odp_2001-2018 (1) (1).csv")
+#Calling the dataset and naming dataframe id_data:
+id_data <- read.csv("idb_odp_2001-2018 (1) (1).csv")
 ```
+
+```{r}
+```
+```{r}
+# Now will look at the dataframe from the environment plus the first five rows
+# using the head function. Noticed the following:
+#The "rate" column has a lot of "dashes" or missing values because of 0 cases for 
+#some diseases. Will look at all the values to see using the function unique()
+#unique(id_data$rate), and other than a dash, we see empty cells and "SC"
+# Will now clean the data by eliminating empty values ," ", "-" or NA 
+# For correcting the NA values I will have to correct at the top of this code
+# when I call the dataframe. I will do that now by adding to the code: 
+#na = (c(" ","-","SC","NA"))
+```
+```{r}
+id_data <- read_csv("idb_odp_2001-2018 (1) (1).csv", na = (c(" ","-","SC","NA")))
+```
+```{r}
+
+# Change the column names to be more r friendly,using the function rename  column names will changeto all lower case and snake_case.
+id_data <- rename_with(id_data, ~ tolower(gsub(" ","_",.x,fixed=TRUE)))
+```
+
+\newpage
+Step 2 Creating variables for data analysis:
 
 
