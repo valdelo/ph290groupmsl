@@ -161,5 +161,19 @@ IDtable2 <- IDtable1 %>% mutate(ID_type = case_when(
   drop_na(ID_type)
 
 ```
+```{r}
+#Create ID_tableyears_grouptotal . Grouping every 3 years as a single period and change years to character, keep only total instead of male and female.
+ID_tableyears_group_total <- IDtable2 %>%
+  mutate(year_range =case_when(
+    year %in% c(2001,2002,2003)~ "2001-2003",
+    year %in% c(2004,2005,2006)~ "2004-2006",
+    year %in% c(2007,2008,2009)~ "2007-2009",
+    year %in% c(2010,2011,2012)~ "2010-2012",
+    year %in% c(2013,2014,2015)~ "2013-2015",
+    year %in% c(2016,2017,2018)~ "2016-2018",
+     )) %>%
+  filter(sex=="TOTAL")
 
+```
 
+\newpage
