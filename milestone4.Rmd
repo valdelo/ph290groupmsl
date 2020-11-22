@@ -51,8 +51,73 @@ id_data <- read_csv("idb_odp_2001-2018 (1) (1).csv", na = (c(" ","-","SC","NA"))
 # Change the column names to be more r friendly,using the function rename  column names will changeto all lower case and snake_case.
 id_data <- rename_with(id_data, ~ tolower(gsub(" ","_",.x,fixed=TRUE)))
 ```
+```{r}
+# next We would like to do the following changes
+# to the rate column: change it to numeric, round it to 2 decimal values and d/c 
+# the asterisk "*" 
+id_data$rate <- as.numeric(as.character(id_data$rate))
+# I view the table and run str() and now rate is numeric and asterisk is gone.
+# Now will round to 2 decimals, will also round the CI to 2 decimals
+id_data$rate <- round(id_data$rate,2)
+id_data$`lower_95%_ci` <- round(id_data$`lower_95%_ci`,2)
+id_data$`upper_95%_ci` <- round(id_data$`upper_95%_ci`,2)
+
+```
+
 
 \newpage
 Step 2 Creating variables for data analysis:
+*The new variables we will create will be:  
+*"region" for the 10 different california regions  
+*ID_type" to group each of the listed diseases by "type of disease" , following conventional microbiology classification 
+```{r}
+#Creating the first variable "region"
+#We will group the counties that correspond to the California regions, as done
+#by the Census bureau: For census purposes, California is divided in 10 
+#regions https://census.ca.gov/regions/
+#First I will use  function unique() to see all the values
+
+#Next  will create vectors with function c() to group into the appropiate region
+#looking carefully on how counties are spelled
+region1 <- c("NEVADA","PLACER","PLUMAS","SACRAMENTO","SHASTA","SIERRA",
+"SISKIYOU","SUTTER","TEHAMA", "YOLO", "YUBA", "MODOC", "EL DORADO", "BUTTE",
+"GLENN", "LASSEN")
+region2 <- c("DEL NORTE", "HUMBOLDT", "LAKE", "MENDOCINO", "NAPA","SONOMA",
+"TRINITY")
+region3 <- c("ALAMEDA","CONTRA COSTA", "MARIN", "SAN FRANCISCO", "SAN MATEO", 
+             "SANTA CLARA", "SOLANO")
+region4 <- c("ALPINE", "AMADOR", "CALAVERAS", "MADERA", "MARIPOSA",
+"MERCED", "MONO","SAN JOAQUIN", "STANISLAUS", "TUOLUMNE") 
+region5 <- c("MONTEREY", "SAN BENITO", "SAN LUIS OBISPO", "SANTA BARBARA",
+             "SANTA CRUZ", "VENTURA")
+region6 <- c("FRESNO","INYO", "KERN", "KINGS", "TULARE")
+region7 <- c("RIVERSIDE", "SAN BERNARDINO")
+region8 <- c("LOS ANGELES")
+region9 <- c("ORANGE")
+region10 <- c("IMPERIAL", "SAN DIEGO")
+California <- c("CALIFORNIA")
+
+```
+```{r}
+#Now will create new column using function mutate and add to current table,
+I #noticed aside for counties there is a "CALIFORNIA" value, will add that
+IDtable1 <- id_data %>% mutate(region = case_when(
+  county %in% region1 ~ "Superior",
+  county %in% region2 ~ "N_coast",
+  county %in% region3 ~ "Bay_area",
+  county %in% region4 ~ "NSJ_valley",
+  county %in% region5 ~ "C_coast",
+  county %in% region6 ~ "SSJ_valley",
+  county %in% region7 ~ "I_Empire",
+  county %in% region8 ~ "LA_county",
+  county %in% region9 ~ "O_county",
+  county %in% region10 ~ "SDI_county",
+  county %in% California ~ "California",
+  TRUE ~ NA_character_
+)) %>%
+  drop_na(region)
+
+#it worked new column formed  called "group" on ID_table1
+```
 
 
