@@ -164,7 +164,7 @@ IDtable2 <- IDtable1 %>% mutate(ID_type = case_when(
 ```{r}
 #Create ID_tableyears_grouptotal . Grouping every 3 years as a single period and change years to character, keep only total instead of male and female.
 ID_tableyears_group_total <- IDtable2 %>%
-  mutate(year_range =case_when(
+  mutate(time_period =case_when(
     year %in% c(2001,2002,2003)~ "2001-2003",
     year %in% c(2004,2005,2006)~ "2004-2006",
     year %in% c(2007,2008,2009)~ "2007-2009",
@@ -177,3 +177,18 @@ ID_tableyears_group_total <- IDtable2 %>%
 ```
 
 \newpage
+```{r}
+# Lourdes. Create a table showing trends of group of diseases by time_period  in California. From all groups of diseases
+# Creating table for graph:
+ID_tableyears_group_total_fig1L <- ID_tableyears_group_total %>%
+  select(c("ID_type","region","rate","time_period")) %>%
+         filter(region=="California")%>%
+  drop_na(rate) %>%
+  group_by(ID_type,time_period,region) %>%
+  summarise(cumm_rate = sum (rate))
+
+
+
+
+```
+
