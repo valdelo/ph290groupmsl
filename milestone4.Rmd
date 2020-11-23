@@ -195,8 +195,35 @@ geom_bar(aes(fill=time_period), stat="identity", position = position_dodge()) +
   scale_y_continuous(labels = function(x) format(x,bigmark=",",scientific=FALSE))+
   scale_fill_manual(name= "time_period", values=c("#ffd333","#ff6600","#be0f24","#f91cc7","#910ff5","#003884")) +
 labs(x="Group of Infectious disease", y = "Cummulative rate",
-title = "Trend of infectious diseases over time from 2001-20018 by type of 
-     Disease")
+title = "Trend of infectious diseases over time from 2001-2018 by type of 
+     Disease and time period (3 year cummulatives)")
+
+``` 
+```{r}
+#Figure 2L Trends from 2001-2018 only for Bacterial, Fungal and Parasitic conditions
+ID_tableyears_group_total_fig2L <- ID_tableyears_group_total %>%
+  select(c("ID_type","region","rate","year")) %>%
+  mutate(year=as.character(year)) %>%
+         filter(region=="California")%>%
+  filter(ID_type=="Bacterial"|ID_type== "Parasitic"|ID_type=="Fungal") %>%
+    drop_na(rate) %>%
+  group_by(ID_type,year,region) %>%
+  summarise(cumm_rate = sum (rate)) 
+#using plotly
+plot_ly(
+  ID_tableyears_group_total_fig2L,
+  x= ~year,
+  y= ~cumm_rate,
+  color= ~ID_type,
+  type="bar"
+) %>%
+  layout(barmode="stack")%>%
+  layout(
+    title = "Trends of Bacterial Fungal and Parasitic Diseases
+    rates per 100,000 from 2001-2018 in California",
+    xaxis = list(title = "Years"),
+    yaxis = list(title = "California Rates per 100,000")
+  )
 
 ```
 
