@@ -187,8 +187,16 @@ ID_tableyears_group_total_fig1L <- ID_tableyears_group_total %>%
   group_by(ID_type,time_period,region) %>%
   summarise(cumm_rate = sum (rate))
 
+#bll_nyc_gg1$time_period <- as.factor(bll_nyc_gg1$time_period)
 
-
+ggplot(ID_tableyears_group_total_fig1L, aes(x = ID_type, y = cumm_rate)) +
+geom_bar(aes(fill=time_period), stat="identity", position = position_dodge()) +
+#geom_col(aes(fill=), col)
+  scale_y_continuous(labels = function(x) format(x,bigmark=",",scientific=FALSE))+
+  scale_fill_manual(name= "time_period", values=c("#ffd333","#ff6600","#be0f24","#f91cc7","#910ff5","#003884")) +
+labs(x="Group of Infectious disease", y = "Cummulative rate",
+title = "Trend of infectious diseases over time from 2001-20018 by type of 
+     Disease")
 
 ```
 
