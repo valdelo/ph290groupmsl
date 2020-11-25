@@ -220,7 +220,7 @@ plot_ly(
   layout(barmode="stack")%>%
   layout(
     title = "Trends of Bacterial Fungal and Parasitic Diseases
-    rates per 100,000 from 2001-2018 in California",
+    rates per 10,000 from 2001-2018 in California",
     xaxis = list(title = "Years"),
     yaxis = list(title = "California Rates per 100,000")
   )
