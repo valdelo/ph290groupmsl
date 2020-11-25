@@ -230,7 +230,50 @@ plot_ly(
   )
 
 ```
+\newpage
+
 ```{r}
-test 112
+#sandya-create disease trend over time
+
+individualdata1<- read_csv("stds-by-disease-county-year-sex.csv")
+
+groupdatafinal<-filter(id_data, County %in% c("ALAMEDA", "SANTA CLARA", "SAN MATEO", "SAN FRANCISCO", "MARIN", "CONTRA COSTA", "SOLANO"))%>%rename("Lower 95% CI"= "Lower.95..CI")%>%rename("Upper 95% CI"= "Upper.95..CI")
+  
+individualdatafinal<-filter(individualdata1, County %in% c("Alameda", "Santa Clara", "San Mateo", "San Francisco", "Marin", "Contra Costa", "Solano"))%>% select(-10)
+
+
+combineddata<-rbind(groupdatafinal, individualdatafinal)
+
+combineddata$County<-tolower(combineddata$County)
+combineddata$Sex<-tolower(combineddata$Sex)
+
+combineddata1<-combineddata%>%filter(Sex %in% "total")
+
+combinedatafinal<-combineddata1%>%mutate(Disease_Type = case_when(Disease %in% c("Gonorrhea", "Early Syphilis", "Chlamydia")~ "STD (Bacterial)", Disease %in% c("Shiga toxin-producing E. coli (STEC) with Hemolytic Uremic Syndrome (HUS)", "Shiga toxin-producing E. coli (STEC) without Hemolytic Uremic Syndrome (HUS)", "Anaplasmosis and Ehrlichiosis", "Hemolytic Uremic Syndrome (HUS) without evidence of Shiga toxin-producing E. coli (STEC)", "Paratyphoid Fever", "Ehrlichiosis", "Anaplasmosis" ,"Shiga Toxin Positive Feces (without culture confirmation)", "E. coli Other STEC (non-O157)",  "Yersiniosis"  ,"Vibrio Infection (non-Cholera)" , "Typhoid Fever", "Typhus Fever",  "Tularemia"  ,"Streptococcal Infection (cases in food and dairy workers)"  ,"Spotted Fever Rickettsiosis" , "Shigellosis","Salmonellosis", "Relapsing Fever" , "Q Fever" , "Psittacosis" , "Plague, human","Lyme Disease", "Listeriosis"  ,"Leptospirosis","Leprosy (Hansen's Disease)" ,"Legionellosis","E. coli O157" ,"Cholera"  , "Campylobacteriosis"  ,"Brucellosis" , "Anthrax" )~ "Bacteria", Disease %in% c("Chikungunya Virus Infection", "Dengue Virus Infection","Flavivirus Infection of Undetermined Species", "Hantavirus Infection","Hepatitis E, acute infection", "acute infection", "Rabies, human","Yellow Fever", "Yersiniosis", "Zika Virus Infection")~ "Virus", Disease %in% c("Amebiasis","Babesiosis", "Cryptosporidiosis", "Cyclosporiasis", "Cysticercosis or Taeniasis", "Malaria", "Giardiasis", "Trichinosis")~"Protozoa", Disease %in% c( 'Botulism, Foodborne', 'Botulism, Other', 'Botulism, Wound', 'Ciguatera Fish Poisoning', 'Domoic Acid Poisoning',  'Paralytic Shellfish Poisoning', 'Scombroid Fish Poisoning')~ "Toxin", Disease %in% c('Creutzfeldt-Jakob Disease and other Transmissible Spongiform Encephalopathies')~ "Prion", Disease ==  'Hemolytic Uremic Syndrome (HUS)'~ "Infectious Complication", Disease == "Coccidioidomycosis"~ "Fungal"))
+
+```
+```{r}
+data1<-combinedatafinal%>%select(-9)
+
+data1$Rate<-(data1$Cases/data1$Population)*100000
+
+
+
+
+plotdata<-data1%>%group_by(Disease_Type, Year)%>%summarize(Mean_Rate=mean(Rate))
+ggplot(plotdata, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity")+facet_wrap(vars(Disease_Type))
 ```
 
+```{r}
+plotdata2<-plotdata%>% filter(Disease_Type != "STD (Bacterial)")
+
+
+ggplot(plotdata2, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity")+facet_wrap(vars(Disease_Type), ncol = 2)
+```
+
+```{r}
+plotdata3<-plotdata%>% filter(Disease_Type == "STD (Bacterial)")
+
+ggplot(plotdata3, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity")+facet_wrap(vars(Disease_Type))+labs(x="Year", y="Mean Rate", title = "Mean rates of STDs (Bacterial) in Bay Area Counties from 2001-2018") + theme_minimal()
+
+```
