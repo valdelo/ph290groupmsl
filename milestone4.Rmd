@@ -34,8 +34,7 @@ Step 1 : Calling dataset and cleaning data
 id_data <- read.csv("idb_odp_2001-2018 (1) (1).csv")
 ```
 
-```{r}
-```
+
 ```{r}
 # Now will look at the dataframe from the environment plus the first five rows
 # using the head function. Noticed the following:
@@ -63,8 +62,8 @@ id_data$rate <- as.numeric(as.character(id_data$rate))
 # I view the table and run str() and now rate is numeric and asterisk is gone.
 # Now will round to 2 decimals, will also round the CI to 2 decimals
 id_data$rate <- round(id_data$rate,2)
-id_data$`lower_95%_ci` <- round(id_data$`lower_95%_ci`,2)
-id_data$`upper_95%_ci` <- round(id_data$`upper_95%_ci`,2)
+#id_data$`lower_95%_ci` <- round(id_data$`lower_95%_ci`,2)
+#id_data$`upper_95%_ci` <- round(id_data$`upper_95%_ci`,2)
 
 ```
 
