@@ -21,6 +21,7 @@ library(readr)
 library(knitr)
 library(kableExtra)
 library(plotly)
+library(ggplot2)
 ```
 We will use :
 Dataset: Infectious Diseases by County, Year and Sex (in California) 2001-2018
@@ -261,14 +262,14 @@ data1$Rate<-(data1$Cases/data1$Population)*100000
 
 
 plotdata<-data1%>%group_by(Disease_Type, Year)%>%summarize(Mean_Rate=mean(Rate))
-ggplot(plotdata, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity")+facet_wrap(vars(Disease_Type))
+ggplot(plotdata, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity")+facet_wrap(vars(Disease_Type))+labs(x="Year", y="Mean Rate", title = "Mean rates of Infectious diseases (including STDs) in Bay Area Counties from 2001-2018") + theme_minimal()
 ```
 
 ```{r}
 plotdata2<-plotdata%>% filter(Disease_Type != "STD (Bacterial)")
 
 
-ggplot(plotdata2, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity")+facet_wrap(vars(Disease_Type), ncol = 2)
+ggplot(plotdata2, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity")+facet_wrap(vars(Disease_Type), ncol = 2)+labs(x="Year", y="Mean Rate", title = "Mean rates of Infectious Diseases in Bay Area Counties from 2001-2018") + theme_minimal()
 ```
 
 ```{r}
