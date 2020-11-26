@@ -264,6 +264,37 @@ plot_ly(
   )
 ```
 
+```{r}
+#Lourdes; will create a new bar chart for most common reported Parasitic diseases rates i California
+ID_mostcommon_parasitic_fig4L <- IDtable2 %>%
+  select(c("disease","ID_type","region","rate","year")) %>%
+  mutate(year=as.character(year)) %>%
+         filter(region=="California")%>%
+  filter(ID_type=="Parasitic") %>%
+  #filter(year=="2018")
+    drop_na(rate) %>%
+ # group_by(disease,year) %>%
+  group_by(disease) %>%
+  summarise(cumm_rate = sum (rate)) %>%
+  filter(cumm_rate >= 1)
+#using plotly
+plot_ly(
+  ID_mostcommon_parasitic_fig4L,
+  x= ~disease,
+  y= ~cumm_rate,
+  color= ~disease,
+  type="bar") %>%
+# layout(barmode="stack")%>%
+  
+  layout(
+    title = "Most common reported Parasitic Diseases
+    rates per 100,000 from 2001-2018 in California",
+    xaxis = list(title = "Years"),
+    yaxis = list(title = "California Rates per 100,000")
+  )
+```
+
+
 
 \newpage
 
