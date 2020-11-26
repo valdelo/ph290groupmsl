@@ -136,7 +136,7 @@ toxin_related <- c("Botulism, Foodborne","Botulism, Other", "Botulism, Wound",
 Poisoning", "Scombroid Fish Poisoning") 
 viral <- c("Chikungunya Virus Infection", "Dengue Virus Infection","Flavivirus
 Infection of Undetermined Species","Hantavirus Infection","Hepatitis E acute
-infection","Rabies, human","Yellow Fever", "Yersiniosis","Zika Virus Infection") 
+infection","Rabies, human","Yellow Fever", "Zika Virus Infection") 
 prions <- c("Creutzfeldt-Jakob Disease and other Transmissible Spongiform
 Encephalopathies")
 fungal <- c("Coccidioidomycosis")
@@ -149,7 +149,7 @@ Rickettsiosis", "Streptococcal Infection (cases in food and dairy workers)",
 "Typhoid Fever", "Paratyphoid Fever", "Typhus Fever", "Relapsing Fever", "Shiga
 toxin-producing E. coli (STEC) without Hemolytic Uremic Syndrome (HUS)",
 "Vibrio Infection (non-Cholera)", "Shiga Toxin Positive Feces (without culture
-confirmation)")
+confirmation)","Yersiniosis")
 infectious_complications <- c("Hemolytic Uremic Syndrome (HUS) without evidence
 of Shiga toxin-producing E. coli (STEC)","Hemolytic Uremic Syndrome (HUS)", 
 "Shiga toxin-producing E. coli (STEC) with Hemolytic Uremic Syndrome (HUS)")
@@ -257,9 +257,10 @@ plot_ly(
 # layout(barmode="stack")%>%
   
   layout(
-    title = "Most common reported Bacterial Diseases
-    rates per 100,000 from 2001-2018 in California",
-    xaxis = list(title = "Years"),
+    title = "Most common reported Bacterial Infection
+    rates per 100,000 from 2001-2018 in California
+    (Excludes STD's)",
+    xaxis = list(title = "Bacterial Infections"),
     yaxis = list(title = "California Rates per 100,000")
   )
 ```
@@ -289,7 +290,37 @@ plot_ly(
   layout(
     title = "Most common reported Parasitic Diseases
     rates per 100,000 from 2001-2018 in California",
-    xaxis = list(title = "Years"),
+    xaxis = list(title = "Parasitic Infections"),
+    yaxis = list(title = "California Rates per 100,000")
+  )
+```
+```{r}
+#Lourdes; will create a new bar chart for most common reported viral diseases rates i California
+ID_mostcommon_viral_fig5L <- IDtable2 %>%
+  select(c("disease","ID_type","region","rate","year")) %>%
+  mutate(year=as.character(year)) %>%
+         filter(region=="California")%>%
+  filter(ID_type=="Viral") %>%
+  #filter(year=="2018")
+    drop_na(rate) %>%
+ # group_by(disease,year) %>%
+  group_by(disease) %>%
+  summarise(cumm_rate = sum (rate)) %>%
+  filter(cumm_rate >= 0.05)
+#using plotly
+plot_ly(
+  ID_mostcommon_viral_fig5L,
+  x= ~disease,
+  y= ~cumm_rate,
+  color= ~disease,
+  type="bar") %>%
+# layout(barmode="stack")%>%
+  
+  layout(
+    title = "Most common reported Viral Infections
+    rates per 100,000 from 2001-2018 in California
+    (Excludes STD's)",
+    xaxis = list(title = "Viral infections"),
     yaxis = list(title = "California Rates per 100,000")
   )
 ```
