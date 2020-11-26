@@ -50,10 +50,14 @@ id_data <- read.csv("idb_odp_2001-2018 (1) (1).csv")
 id_data <- read_csv("idb_odp_2001-2018 (1) (1).csv", na = (c(" ","-","SC","NA")))
 ```
 ```{r}
-
 # Change the column names to be more r friendly,using the function rename  column names will changeto all lower case and snake_case.
 id_data <- rename_with(id_data, ~ tolower(gsub(" ","_",.x,fixed=TRUE)))
 ```
+```{r}
+head(id_data)
+```
+
+
 ```{r}
 # next We would like to do the following changes
 # to the rate column: change it to numeric, round it to 2 decimal values and d/c 
@@ -62,8 +66,8 @@ id_data$rate <- as.numeric(as.character(id_data$rate))
 # I view the table and run str() and now rate is numeric and asterisk is gone.
 # Now will round to 2 decimals, will also round the CI to 2 decimals
 id_data$rate <- round(id_data$rate,2)
-#id_data$`lower_95%_ci` <- round(id_data$`lower_95%_ci`,2)
-#id_data$`upper_95%_ci` <- round(id_data$`upper_95%_ci`,2)
+#id_data$`lower.95%..ci` <- round(id_data$`lower.95%..ci`, 2)
+#id_data$`upper.95%..ci` <- round(id_data$`upper.95%..ci`,2)
 
 ```
 
@@ -230,6 +234,37 @@ plot_ly(
   )
 
 ```
+```{r}
+#Lourdes most common bacterial diseases from 2001 to 2018:
+ID_mostcommon_bacterial_fig3L <- IDtable2 %>%
+  select(c("disease","ID_type","region","rate","year")) %>%
+  mutate(year=as.character(year)) %>%
+         filter(region=="California")%>%
+  filter(ID_type=="Bacterial") %>%
+  #filter(year=="2018")
+    drop_na(rate) %>%
+ # group_by(disease,year) %>%
+  group_by(disease) %>%
+  summarise(cumm_rate = sum (rate)) %>%
+  filter(cumm_rate >= 10)
+#using plotly
+plot_ly(
+  ID_mostcommon_bacterial_fig3L,
+  x= ~disease,
+  y= ~cumm_rate,
+  color= ~disease,
+  type="bar") %>%
+# layout(barmode="stack")%>%
+  
+  layout(
+    title = "Most common reported Bacterial Diseases
+    rates per 100,000 from 2001-2018 in California",
+    xaxis = list(title = "Years"),
+    yaxis = list(title = "California Rates per 100,000")
+  )
+```
+
+
 \newpage
 
 ```{r}
