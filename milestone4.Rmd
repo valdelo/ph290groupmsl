@@ -375,6 +375,8 @@ plotdata3<-plotdata%>% filter(Disease_Type == "STD (Bacterial)")
 
 ggplot(plotdata3, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity", color= "#ffd333")+facet_wrap(vars(Disease_Type))+labs(x="Year", y="Mean Rate", title = "Mean rates of STDs (Bacterial) in Bay Area Counties from 2001-2018") 
 
+testing<-2
+
 ```
 
 ```{r}
