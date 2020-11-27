@@ -314,7 +314,7 @@ plot_ly(
   x= ~disease,
   y= ~cumm_rate,
   color= ~disease,
-  type="bar") %>%
+  type="bar")%>%
 # layout(barmode="stack")%>%
   
   layout(
