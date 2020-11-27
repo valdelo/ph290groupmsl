@@ -2,13 +2,12 @@
 title: "milestone 4"
 author: "Sandya Krishna, Mai sedki, Lourdes Valdez"
 date: "11/16/2020"
-output: pdf_document
-Hey!  
-
-
+output:
+  html_document:
+    df_print: paged
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=F}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -49,11 +48,11 @@ id_data <- read.csv("idb_odp_2001-2018 (1) (1).csv")
 ```{r}
 id_data <- read_csv("idb_odp_2001-2018 (1) (1).csv", na = (c(" ","-","SC","NA")))
 ```
-```{r}
+```{r, include=FALSE}
 # Change the column names to be more r friendly,using the function rename  column names will changeto all lower case and snake_case.
 id_data <- rename_with(id_data, ~ tolower(gsub(" ","_",.x,fixed=TRUE)))
 ```
-```{r}
+```{r, include =FALSE}
 head(id_data)
 ```
 
@@ -66,8 +65,8 @@ id_data$rate <- as.numeric(as.character(id_data$rate))
 # I view the table and run str() and now rate is numeric and asterisk is gone.
 # Now will round to 2 decimals, will also round the CI to 2 decimals
 id_data$rate <- round(id_data$rate,2)
-#id_data$`lower.95%..ci` <- round(id_data$`lower.95%..ci`, 2)
-#id_data$`upper.95%..ci` <- round(id_data$`upper.95%..ci`,2)
+id_data$`lower_95%_ci` <- round(id_data$`lower_95%_ci`, 2)
+id_data$`upper_95%_ci` <- round(id_data$`upper_95%_ci`,2)
 
 ```
 
@@ -184,7 +183,7 @@ ID_tableyears_group_total <- IDtable2 %>%
 ```
 
 \newpage
-```{r}
+```{r, echo=F}
 # Lourdes. Create a table showing trends of group of diseases by time_period  in California. From all groups of diseases
 # Creating table for graph:
 ID_tableyears_group_total_fig1L <- ID_tableyears_group_total %>%
@@ -193,8 +192,6 @@ ID_tableyears_group_total_fig1L <- ID_tableyears_group_total %>%
   drop_na(rate) %>%
   group_by(ID_type,time_period,region) %>%
   summarise(cumm_rate = sum (rate))
-
-#bll_nyc_gg1$time_period <- as.factor(bll_nyc_gg1$time_period)
 
 ggplot(ID_tableyears_group_total_fig1L, aes(x = ID_type, y = cumm_rate)) +
 geom_bar(aes(fill=time_period), stat="identity", position = position_dodge()) +
