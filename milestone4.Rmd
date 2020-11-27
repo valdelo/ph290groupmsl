@@ -337,6 +337,8 @@ individualdata1<- read_csv("stds-by-disease-county-year-sex.csv")
 groupdata<-read_csv("idb_odp_2001-2018 (1) (1).csv")
 
 groupdatafinal<-filter(groupdata, County %in% c("ALAMEDA", "SANTA CLARA", "SAN MATEO", "SAN FRANCISCO", "MARIN", "CONTRA COSTA", "SOLANO"))
+
+testing<-3
   
 individualdatafinal<-filter(individualdata1, County %in% c("Alameda", "Santa Clara", "San Mateo", "San Francisco", "Marin", "Contra Costa", "Solano"))%>% select(-10)
 
