@@ -237,8 +237,9 @@ plot_ly(
 #sandya-create disease trend over time
 
 individualdata1<- read_csv("stds-by-disease-county-year-sex.csv")
+groupdata<-read_csv("idb_odp_2001-2018 (1) (1).csv")
 
-groupdatafinal<-filter(id_data, County %in% c("ALAMEDA", "SANTA CLARA", "SAN MATEO", "SAN FRANCISCO", "MARIN", "CONTRA COSTA", "SOLANO"))%>%rename("Lower 95% CI"= "Lower.95..CI")%>%rename("Upper 95% CI"= "Upper.95..CI")
+groupdatafinal<-filter(groupdata, County %in% c("ALAMEDA", "SANTA CLARA", "SAN MATEO", "SAN FRANCISCO", "MARIN", "CONTRA COSTA", "SOLANO"))
   
 individualdatafinal<-filter(individualdata1, County %in% c("Alameda", "Santa Clara", "San Mateo", "San Francisco", "Marin", "Contra Costa", "Solano"))%>% select(-10)
 
@@ -262,7 +263,7 @@ data1$Rate<-(data1$Cases/data1$Population)*100000
 
 
 plotdata<-data1%>%group_by(Disease_Type, Year)%>%summarize(Mean_Rate=mean(Rate))
-ggplot(plotdata, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity")+facet_wrap(vars(Disease_Type))+labs(x="Year", y="Mean Rate", title = "Mean rates of Infectious diseases (including STDs) in Bay Area Counties from 2001-2018") + theme_classic()
+ggplot(plotdata, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity")+facet_wrap(vars(Disease_Type))+labs(x="Year", y="Mean Rate", title = "Mean rates of Infectious diseases (including STDs) in Bay Area Counties from 2001-2018") + theme_classic()+ scale_color_manual(values=c("#ffd333","#ff6600","#be0f24","#f91cc7","#910ff5","#003884")) 
 ```
 
 ```{r}
@@ -275,6 +276,6 @@ ggplot(plotdata2, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity")+facet_wra
 ```{r}
 plotdata3<-plotdata%>% filter(Disease_Type == "STD (Bacterial)")
 
-ggplot(plotdata3, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity")+facet_wrap(vars(Disease_Type))+labs(x="Year", y="Mean Rate", title = "Mean rates of STDs (Bacterial) in Bay Area Counties from 2001-2018") +theme_classic()
+ggplot(plotdata3, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity", color= "#ffd333")+facet_wrap(vars(Disease_Type))+labs(x="Year", y="Mean Rate", title = "Mean rates of STDs (Bacterial) in Bay Area Counties from 2001-2018") 
 
 ```
