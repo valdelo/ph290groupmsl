@@ -360,25 +360,25 @@ data1$Rate<-(data1$Cases/data1$Population)*100000
 
 
 plotdata<-data1%>%group_by(Disease_Type, Year)%>%summarize(Mean_Rate=mean(Rate))
-ggplot(plotdata, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity")+facet_wrap(vars(Disease_Type))+labs(x="Year", y="Mean Rate", title = "Mean rates of Infectious diseases (including STDs) in Bay Area Counties from 2001-2018") + theme_classic()+ scale_color_manual(values=c("#ffd333","#ff6600","#be0f24","#f91cc7","#910ff5","#003884")) 
+ggplot(plotdata, aes(x=Year, y=Mean_Rate))+facet_wrap(vars(Disease_Type), ncol = 2)+geom_line(aes(color = Disease_Type))+labs(x="Year", y="Mean Rate", title = "Mean Rates of Infectious diseases (including STDs) in Bay Area Counties from 2001-2018") + theme_minimal()
 ```
 
+Interpretation of graph: This graph looks at the mean rates per year of different types of infectious disease in the Bay area counties from 2001 to 2018. From the graphs it is noticeable that STD rates are increasing at a much greater level than other types of infectious diseases. 
 ```{r}
 plotdata2<-plotdata%>% filter(Disease_Type != "STD (Bacterial)")
 
 
-ggplot(plotdata2, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity")+facet_wrap(vars(Disease_Type), ncol = 2)+labs(x="Year", y="Mean Rate", title = "Mean rates of Infectious Diseases in Bay Area Counties from 2001-2018") + theme_classic()
+ggplot(plotdata2, aes(x=Year, y=Mean_Rate))+geom_line(aes(color = Disease_Type))+facet_wrap(vars(Disease_Type), ncol = 2)+labs(x="Year", y="Mean Rate", title = "Mean rates of Infectious Diseases in Bay Area Counties from 2001-2018") + theme_minimal()
 ```
+Interpretation of graph: This graph looks at the mean rates per year of different types of infectious disease from 2001 to 2018 in the Bay area counties (excluding STDs). I created this graph to better visualize the trends in diseases apart from STDs. From the graphs it is noticeable that fungla rates are increasing overtime whereas Toxins, Priosns, Infectious complications remain at a very low steady level. Bacterial infection rates remain higher than the other types of disease but seem to be at a steady rate over time. 
 
 ```{r}
 plotdata3<-plotdata%>% filter(Disease_Type == "STD (Bacterial)")
 
-ggplot(plotdata3, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity", color= "#ffd333")+facet_wrap(vars(Disease_Type))+labs(x="Year", y="Mean Rate", title = "Mean rates of STDs (Bacterial) in Bay Area Counties from 2001-2018") 
-
-testing<-2
+ggplot(plotdata3, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity", color= "#910ff5")+facet_wrap(vars(Disease_Type))+labs(x="Year", y="Mean Rate", title = "Mean rates of STDs (Bacterial) in Bay Area Counties from 2001-2018") +theme_minimal()
 
 ```
-
+Interpretation of graph: This graph looks at the mean rates per year of bacterial STD infectious disease per year in the Bay area counties from 2001 to 2018. I created this graph to better visualize the trends in STDs.The graphs shows a very significant increase in the mean rate of STDs. however from 2013 and onward, we see an even greater increase in rates. 
 ```{r}
 my_final_try <- 1
 ```
