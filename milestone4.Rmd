@@ -332,6 +332,26 @@ plot_ly(
 
 ```{r}
 
+#sandya-create disease trend over time
+
+individualdata1<- read_csv("stds-by-disease-county-year-sex.csv")
+groupdata<-read_csv("idb_odp_2001-2018 (1) (1).csv")
+
+groupdatafinal<-filter(groupdata, County %in% c("ALAMEDA", "SANTA CLARA", "SAN MATEO", "SAN FRANCISCO", "MARIN", "CONTRA COSTA", "SOLANO"))
+
+testing<-3
+  
+individualdatafinal<-filter(individualdata1, County %in% c("Alameda", "Santa Clara", "San Mateo", "San Francisco", "Marin", "Contra Costa", "Solano"))%>% select(-10)
+
+
+combineddata<-rbind(groupdatafinal, individualdatafinal)
+
+combineddata$County<-tolower(combineddata$County)
+combineddata$Sex<-tolower(combineddata$Sex)
+
+combineddata1<-combineddata%>%filter(Sex %in% "total")
+
+combinedatafinal<-combineddata1%>%mutate(Disease_Type = case_when(Disease %in% c("Gonorrhea", "Early Syphilis", "Chlamydia")~ "STD (Bacterial)", Disease %in% c("Shiga toxin-producing E. coli (STEC) with Hemolytic Uremic Syndrome (HUS)", "Shiga toxin-producing E. coli (STEC) without Hemolytic Uremic Syndrome (HUS)", "Anaplasmosis and Ehrlichiosis", "Hemolytic Uremic Syndrome (HUS) without evidence of Shiga toxin-producing E. coli (STEC)", "Paratyphoid Fever", "Ehrlichiosis", "Anaplasmosis" ,"Shiga Toxin Positive Feces (without culture confirmation)", "E. coli Other STEC (non-O157)",  "Yersiniosis"  ,"Vibrio Infection (non-Cholera)" , "Typhoid Fever", "Typhus Fever",  "Tularemia"  ,"Streptococcal Infection (cases in food and dairy workers)"  ,"Spotted Fever Rickettsiosis" , "Shigellosis","Salmonellosis", "Relapsing Fever" , "Q Fever" , "Psittacosis" , "Plague, human","Lyme Disease", "Listeriosis"  ,"Leptospirosis","Leprosy (Hansen's Disease)" ,"Legionellosis","E. coli O157" ,"Cholera"  , "Campylobacteriosis"  ,"Brucellosis" , "Anthrax" )~ "Bacteria", Disease %in% c("Chikungunya Virus Infection", "Dengue Virus Infection","Flavivirus Infection of Undetermined Species", "Hantavirus Infection","Hepatitis E, acute infection", "acute infection", "Rabies, human","Yellow Fever", "Yersiniosis", "Zika Virus Infection")~ "Virus", Disease %in% c("Amebiasis","Babesiosis", "Cryptosporidiosis", "Cyclosporiasis", "Cysticercosis or Taeniasis", "Malaria", "Giardiasis", "Trichinosis")~"Protozoa", Disease %in% c( 'Botulism, Foodborne', 'Botulism, Other', 'Botulism, Wound', 'Ciguatera Fish Poisoning', 'Domoic Acid Poisoning',  'Paralytic Shellfish Poisoning', 'Scombroid Fish Poisoning')~ "Toxin", Disease %in% c('Creutzfeldt-Jakob Disease and other Transmissible Spongiform Encephalopathies')~ "Prion", Disease ==  'Hemolytic Uremic Syndrome (HUS)'~ "Infectious Complication", Disease == "Coccidioidomycosis"~ "Fungal"))
 
 ```
 ```{r}
