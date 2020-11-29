@@ -182,6 +182,33 @@ ID_tableyears_group_total <- IDtable2 %>%
 
 ```
 
+```{r}
+my_table_data <- ID_tableyears_group_total %>%
+  select(c("ID_type","region","rate","time_period")) %>%
+  filter(ID_type=="Bacterial"|ID_type== "Parasitic"|ID_type=="Fungal") %>%
+  drop_na(rate) %>%
+  group_by(ID_type,time_period,region) %>%
+  summarise(cumm_rate = sum (rate))
+```
+
+```{r}
+my_new_table_data <- my_table_data %>%
+  pivot_wider(names_from=c(ID_type),values_from= "cumm_rate")
+```
+
+
+```{r}
+kable(my_new_table_data, 
+      booktabs=T, 
+      col.names=c("Time Period", "Region", "Bacterial", "Fungal", "Parasitic"),  
+      align='lccc', 
+      caption="Infectious disease rates over time by disease etiology (from 2001 - 2018 by 3 year increments)",
+      format.args=list(big.mark=","))
+```
+```
+
+
+
 \newpage
 ```{r, echo=F}
 # Lourdes. Create a table showing trends of group of diseases by time_period  in California. From all groups of diseases
