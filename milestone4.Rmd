@@ -583,6 +583,6 @@ ggplot(std_set, aes(x=Year, y=Overall_Rate))+geom_line(aes(color = Sex))+labs(x=
 
 
 ```
-Interpretation of graph: This graph looks at the Overall rates per year of bacterial STD infectious disease per year in the Bay area counties from 2001 to 2018, seperated by Sex. I created this graph to better visualize the trends in STDs between males and females.The graphs shows a very significant increase in the overall rate of STDs for both male and females. Prior to around 2014, it seems that female rates were higher than male rates. However from around 2014 and onward, we see an even greater increase in male rates. 
+Interpretation of graph: This graph looks at the Overall rates per year of bacterial STD infectious disease per year in the Bay area counties from 2001 to 2018, seperated by Sex. I created this graph to better visualize the trends in STDs between males and females.The graphs shows a very significant increase in the overall rate of STDs for both male and females. Prior to around 2014, it seems that female rates were higher than male rates. However from around 2014 and onward, we see an even greater increase in male rates,
 
 
