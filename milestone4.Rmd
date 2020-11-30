@@ -369,8 +369,41 @@ plot_ly(
   )
 ```
 ```{r}
+#Lourdes; will create a new bar chart for most common reported fungal diseases rates in California
+ID_mostcommon_fungal_fig5L <- IDtable2 %>%
+  select(c("disease","ID_type","region","rate","year")) %>%
+  mutate(year=as.character(year)) %>%
+         filter(region=="California")%>%
+  filter(ID_type=="Fungal") %>%
+  #filter(year=="2018")
+    drop_na(rate) %>%
+ # group_by(disease,year) %>%
+  group_by(disease) %>%
+  summarise(cumm_rate = sum (rate))
+#%>%
+ # filter(cumm_rate >= 0.001)
+#using plotly
+plot_ly(
+  ID_mostcommon_fungal_fig5L,
+  x= ~disease,
+  y= ~cumm_rate,
+  color= ~disease,
+  type="bar")%>%
+# layout(barmode="stack")%>%
+  
+  layout(
+    title = "Most common reported Fungal Infections
+    rates per 100,000 from 2001-2018 in California
+    (Excludes STD's)",
+    xaxis = list(title = "Fungal infections"),
+    yaxis = list(title = "California Rates per 100,000")
+  )
+```
+
+
+```{r}
 #Lourdes; will create a new bar chart for most common reported viral diseases rates i California
-ID_mostcommon_viral_fig5L <- IDtable2 %>%
+ID_mostcommon_viral_fig6L <- IDtable2 %>%
   select(c("disease","ID_type","region","rate","year")) %>%
   mutate(year=as.character(year)) %>%
          filter(region=="California")%>%
@@ -380,7 +413,7 @@ ID_mostcommon_viral_fig5L <- IDtable2 %>%
  # group_by(disease,year) %>%
   group_by(disease) %>%
   summarise(cumm_rate = sum (rate)) %>%
-  filter(cumm_rate >= 0.05)
+  filter(cumm_rate > 0.05)
 #using plotly
 plot_ly(
   ID_mostcommon_viral_fig5L,
