@@ -1,28 +1,34 @@
 ---
-title: "milestone 4"
-author: "Sandya Krishna, Mai sedki, Lourdes Valdez"
-date: "11/16/2020"
+title: "Milestone 4 and 5"
+author: "Sandya Krishna, Mai Sedki, Lourdes Valdez"
+date: "11/30/2020"
 output:
   html_document:
     df_print: paged
 ---
-Dataset: Infectious Diseases by County, Year and Sex (in California) 2001-2018
- Source : https://data.chhs.ca.gov/dataset/infectious-disease
 
-Raw format of dataset:
-https://data.chhs.ca.gov/dataset/03e61434-7db8-4a53-a3e2-1d4d36d6848d/resource/75019f89-b349-4d5e-825d-8b5960fc028c/download/idb_odp_2001-2018.csv
-Name/source: CHHS Open Data
-Number of columns: 10
-Number of rows: 154,344
-Main question/Problem statement:
-Infectious diseases are a very important public health issue. So we want to examine overall communicable disease rates and trends over time (Dataset does not include STDs).
-Will also investigate  if there are relationships with other factors or infections using 3 other different datasets
+# Research questions / Problem statement:
+Infectious diseases are a very important public health issue. So we want to 
+examine overall communicable disease rates and trends over time of Infectious diseases reported in california. Sexually transmitted diseases will be analized separately from other groups of infectious diseases.
 
+# Datasets to be used :
+1. Infectious Diseases by County, Year and Sex (in California)2001-2018
+   Source : https://data.chhs.ca.gov/dataset/infectious-disease
+   Raw format of dataset:
+  https://data.chhs.ca.gov/dataset/03e61434-7db8-4a53-a3e2-1d4d36d6848d/resource
+  /75019f89-b349-4d5e-825d-8b5960fc028c/download/idb_odp_2001-2018.csv
+  Name/source: CHHS Open Data
+  Number of columns: 10
+  Number of rows: 154,344
+2.STD's in California by disease, vounty, year and sex. Dtasethas  case counts
+  and rates for sexually transmitted diseases (chlamydia, gonorrhea, and all
+  forms of syphilis) reported for California residents.
+  https://data.chhs.ca.gov/dataset/stds-in-california-by-disease-county-year-and
+  -sex
+  
 ```{r setup, include=F}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-## R Markdown
 
 ```{r, include=FALSE}
 #Loading libraries:
@@ -33,11 +39,7 @@ library(kableExtra)
 library(plotly)
 library(ggplot2)
 ```
-We will use :
-Dataset: Infectious Diseases by County, Year and Sex (in California) 2001-2018
-Source : https://data.chhs.ca.gov/dataset/infectious-disease
 
-Step 1 : Calling dataset and cleaning data 
 
 ```{r, include =FALSE}
 #Calling the dataset and naming dataframe id_data:
@@ -45,7 +47,7 @@ id_data <- read.csv("idb_odp_2001-2018 (1) (1).csv")
 ```
 
 
-```{r, include=FALSE}
+```{r, echo=FALSE}
 # Now will look at the dataframe from the environment plus the first five rows
 # using the head function. Noticed the following:
 #The "rate" column has a lot of "dashes" or missing values because of 0 cases for 
@@ -56,7 +58,7 @@ id_data <- read.csv("idb_odp_2001-2018 (1) (1).csv")
 # when I call the dataframe. I will do that now by adding to the code: 
 #na = (c(" ","-","SC","NA"))
 ```
-```{r}
+```{r include=FALSE}
 id_data <- read_csv("idb_odp_2001-2018 (1) (1).csv", na = (c(" ","-","SC","NA")))
 ```
 ```{r, include=FALSE}
@@ -68,7 +70,7 @@ head(id_data)
 ```
 
 
-```{r}
+```{r, include=FALSE}
 # next We would like to do the following changes
 # to the rate column: change it to numeric, round it to 2 decimal values and d/c 
 # the asterisk "*" 
@@ -83,11 +85,57 @@ id_data$`upper_95%_ci` <- round(id_data$`upper_95%_ci`,2)
 
 
 \newpage
-Step 2 Creating variables for data analysis:
-*The new variables we will create will be:  
-*"region" for the 10 different california regions  
-*ID_type" to group each of the listed diseases by "type of disease" , following conventional microbiology classification 
-```{r}
+# Creating variables for data analysis:
+*We created new groups of variables to facilitate data presentation and analysis.
+The new groups of variables are:  
+Name of california region, for the 10 different California regions  
+Type of infectious disease : to group each of thereported diseases by "type of disease" , following conventional microbiology classification.
+
+The California regions are as follows:
+Superior <- "NEVADA","PLACER","PLUMAS","SACRAMENTO","SHASTA","SIERRA",
+"SISKIYOU","SUTTER","TEHAMA", "YOLO", "YUBA", "MODOC", "EL DORADO", "BUTTE",
+"GLENN", "LASSEN"
+North Coast <- "DEL NORTE", "HUMBOLDT", "LAKE", "MENDOCINO", "NAPA","SONOMA",
+"TRINITY"
+Bay area<- "ALAMEDA","CONTRA COSTA", "MARIN", "SAN FRANCISCO", "SAN MATEO", 
+             "SANTA CLARA", "SOLANO"
+North San Joaquin Valley <- "ALPINE", "AMADOR", "CALAVERAS", "MADERA", "MARIPOSA",
+"MERCED", "MONO","SAN JOAQUIN", "STANISLAUS", "TUOLUMNE" 
+Central Coast <- "MONTEREY", "SAN BENITO", "SAN LUIS OBISPO", "SANTA BARBARA",
+             "SANTA CRUZ", "VENTURA"
+South San Joaquin Valley <- "FRESNO","INYO", "KERN", "KINGS", "TULARE"
+Inland Empire<- "RIVERSIDE", "SAN BERNARDINO"
+LA County <- "LOS ANGELES"
+Orange County <- "ORANGE"
+San Diego and Imperial County <- "IMPERIAL", "SAN DIEGO"
+We will also have california as a total.
+
+The groups of infectious diseases will be as follows:
+1. Parasitic <- c("Amebiasis","Babesiosis", "Cryptosporidiosis", "Cyclosporiasis",
+"Cysticercosis or Taeniasis", "Malaria", "Giardiasis", "Trichinosis")
+2. Toxin_related <- c("Botulism, Foodborne","Botulism, Other", "Botulism, Wound",
+"Ciguatera Fish Poisoning", "Domoic Acid Poisoning","Paralytic Shellfish
+Poisoning", "Scombroid Fish Poisoning") 
+3. viral <- c("Chikungunya Virus Infection", "Dengue Virus Infection","Flavivirus
+Infection of Undetermined Species","Hantavirus Infection","Hepatitis E acute
+infection","Rabies, human","Yellow Fever", "Zika Virus Infection") 
+prions <- c("Creutzfeldt-Jakob Disease and other Transmissible Spongiform
+Encephalopathies")
+4. fungal <- c("Coccidioidomycosis")
+5. Bacterial <- c("Anaplasmosis", "Anaplasmosis and Ehrlichiosis", "Anthrax",
+"Brucellosis", "Campylobacteriosis","Cholera","E. coli O157","E. coli Other STEC
+(non-O157)", "Legionellosis","Leprosy (Hansen's Disease)", "Leptospirosis",
+"Listeriosis", "Lyme Disease","Plague, human","Q Fever","Spotted Fever
+Rickettsiosis", "Streptococcal Infection (cases in food and dairy workers)",
+"Ehrlichiosis", "Psittacosis", "Salmonellosis", "Shigellosis", "Tularemia",
+"Typhoid Fever", "Paratyphoid Fever", "Typhus Fever", "Relapsing Fever", "Shiga
+toxin-producing E. coli (STEC) without Hemolytic Uremic Syndrome (HUS)",
+"Vibrio Infection (non-Cholera)", "Shiga Toxin Positive Feces (without culture
+confirmation)","Yersiniosis")
+6. Infectious_complications <- c("Hemolytic Uremic Syndrome (HUS) without evidence
+of Shiga toxin-producing E. coli (STEC)","Hemolytic Uremic Syndrome (HUS)", 
+"Shiga toxin-producing E. coli (STEC) with Hemolytic Uremic Syndrome (HUS)")
+```{r include=F}
 #Creating the first variable "region"
 #We will group the counties that correspond to the California regions, as done
 #by the Census bureau: For census purposes, California is divided in 10 
@@ -115,7 +163,7 @@ region10 <- c("IMPERIAL", "SAN DIEGO")
 California <- c("CALIFORNIA")
 
 ```
-```{r}
+```{r, include=F}
 #Now will create new column using function mutate and add to current table,
 I #noticed aside for counties there is a "CALIFORNIA" value, will add that
 IDtable1 <- id_data %>% mutate(region = case_when(
@@ -136,7 +184,7 @@ IDtable1 <- id_data %>% mutate(region = case_when(
 
 #it worked new column formed  called "group" on ID_table1
 ```
-```{r}
+```{r, include = FALSE}
 # Creating the second variable "ID_type"
 # Our group decided to create the seven following groups:
 parasitic <- c("Amebiasis","Babesiosis", "Cryptosporidiosis", "Cyclosporiasis",
@@ -178,7 +226,7 @@ IDtable2 <- IDtable1 %>% mutate(ID_type = case_when(
   drop_na(ID_type)
 
 ```
-```{r}
+```{r,include=F}
 #Create ID_tableyears_grouptotal . Grouping every 3 years as a single period and change years to character, keep only total instead of male and female.
 ID_tableyears_group_total <- IDtable2 %>%
   mutate(time_period =case_when(
@@ -193,6 +241,8 @@ ID_tableyears_group_total <- IDtable2 %>%
 
 ```
 
+\newpage
+# Tables
 ```{r}
 my_table_data <- ID_tableyears_group_total %>%
   select(c("ID_type","region","rate","time_period")) %>%
@@ -252,10 +302,12 @@ kable(my_new_bayarea_table,
 
 ```
 
-
+# Figures
 
 
 \newpage
+#Figures:
+
 ```{r}
 # Lourdes. Create a table showing trends of group of diseases by time_period  in California. From all groups of diseases
 # Creating table for graph:
@@ -276,10 +328,13 @@ geom_bar(aes(fill=time_period), stat="identity", position = position_dodge()) +
   #                  ,
   #values=c("#ffd333","#ff6600","#be0f24","#f91cc7","#910ff5","#003884")) +
 labs(x="Group of Infectious disease", y = "Cummulative rate",
-title = "Trend of infectious diseases over time from 2001-2018 by type of 
+title = "Figure 1: Trend of infectious diseases over time from 2001-2018 by type of 
      Disease and time period (3 year cummulatives)")
 
 ``` 
+Figure 1 shows that of the reported infectious diseases (excluding sexually transmitted diseases) that are most commonly reported are Bacterial diseases, followed by Fungal, and then parasitic diseases. Viral diseases have a lower 
+rate. These numbers do not necessarily translates into real prevalence since 
+many diseases are not considered "reportable", due to their common prevalence and ubiquitous distribution.
 ```{r}
 #Figure 2L Trends from 2001-2018 only for Bacterial, Fungal and Parasitic conditions
 ID_tableyears_group_total_fig2L <- ID_tableyears_group_total %>%
@@ -301,7 +356,7 @@ plot_ly(
   layout(barmode="stack")%>%
   
   layout(
-    title = "Trends of Bacterial Fungal and Parasitic Diseases
+    title = "Figure 2 : Trends of Bacterial Fungal and Parasitic Diseases
     rates per 100,000 from 2001-2018 in California
     (Excludes STD's)",
     xaxis = list(title = "Years"),
@@ -309,19 +364,22 @@ plot_ly(
   )
 
 ```
+Figure 2: We could tell thet through the years, reports of bacterial diseases have increased overtime. Reasons for this increase could be related to a real increase of reportable cases, versus improved report methodology. The same goes to Fungal infections. Parasitic infections have ranged from  4.6/100,000 in 2002 to 19.33/100,000 in 2017.
+
 ```{r}
 #Lourdes most common bacterial diseases from 2001 to 2018:
 ID_mostcommon_bacterial_fig3L <- IDtable2 %>%
-  select(c("disease","ID_type","region","rate","year")) %>%
+  #select(c("disease","ID_type","region","rate","year","sex","cases","population")) %>%
   mutate(year=as.character(year)) %>%
          filter(region=="California")%>%
+  filter(sex=="TOTAL") %>%
   filter(ID_type=="Bacterial") %>%
-  #filter(year=="2018")
-    drop_na(rate) %>%
- # group_by(disease,year) %>%
-  group_by(disease) %>%
+      drop_na(rate) %>%
+ group_by(disease) %>%
   summarise(cumm_rate = sum (rate)) %>%
-  filter(cumm_rate >= 10)
+  #summarize(cum_disease = sum(disease)) %>%
+#mutate(average_cases= (cum_disease/18))
+filter(cumm_rate >= 5)
 #using plotly
 plot_ly(
   ID_mostcommon_bacterial_fig3L,
@@ -333,7 +391,7 @@ plot_ly(
   
   layout(
     title = "Most common reported Bacterial Infection
-    rates per 100,000 from 2001-2018 in California
+     aprox cummulative rates per 100,000 from 2001-2018 in California
     (Excludes STD's)",
     xaxis = list(title = "Bacterial Infections"),
     yaxis = list(title = "California Rates per 100,000")
@@ -343,7 +401,7 @@ plot_ly(
 ```{r}
 #Lourdes; will create a new bar chart for most common reported Parasitic diseases rates i California
 ID_mostcommon_parasitic_fig4L <- IDtable2 %>%
-  select(c("disease","ID_type","region","rate","year")) %>%
+  select(c("disease","ID_type","region","rate","year" ))%>%
   mutate(year=as.character(year)) %>%
          filter(region=="California")%>%
   filter(ID_type=="Parasitic") %>%
@@ -369,7 +427,7 @@ plot_ly(
     yaxis = list(title = "California Rates per 100,000")
   )
 ```
-```{r}
+```{r, include =FALSE}
 #Lourdes; will create a new bar chart for most common reported fungal diseases rates in California
 ID_mostcommon_fungal_fig5L <- IDtable2 %>%
   select(c("disease","ID_type","region","rate","year")) %>%
@@ -377,12 +435,11 @@ ID_mostcommon_fungal_fig5L <- IDtable2 %>%
          filter(region=="California")%>%
   filter(ID_type=="Fungal") %>%
   #filter(year=="2018")
-    drop_na(rate) %>%
+   # drop_na(rate) %>%
  # group_by(disease,year) %>%
   group_by(disease) %>%
-  summarise(cumm_rate = sum (rate))
-#%>%
- # filter(cumm_rate >= 0.001)
+  summarise(cumm_rate = sum (rate))%>%
+ filter(cumm_rate >= 0.0001)
 #using plotly
 plot_ly(
   ID_mostcommon_fungal_fig5L,
