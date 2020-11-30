@@ -311,16 +311,17 @@ plot_ly(
 ```{r}
 #Lourdes most common bacterial diseases from 2001 to 2018:
 ID_mostcommon_bacterial_fig3L <- IDtable2 %>%
-  select(c("disease","ID_type","region","rate","year")) %>%
+  #select(c("disease","ID_type","region","rate","year","sex","cases","population")) %>%
   mutate(year=as.character(year)) %>%
          filter(region=="California")%>%
+  filter(sex=="TOTAL") %>%
   filter(ID_type=="Bacterial") %>%
-  #filter(year=="2018")
-    drop_na(rate) %>%
- # group_by(disease,year) %>%
-  group_by(disease) %>%
+      drop_na(rate) %>%
+ group_by(disease) %>%
   summarise(cumm_rate = sum (rate)) %>%
-  filter(cumm_rate >= 10)
+  #summarize(cum_disease = sum(disease)) %>%
+#mutate(average_cases= (cum_disease/18))
+filter(cumm_rate >= 5)
 #using plotly
 plot_ly(
   ID_mostcommon_bacterial_fig3L,
@@ -332,7 +333,7 @@ plot_ly(
   
   layout(
     title = "Most common reported Bacterial Infection
-    rates per 100,000 from 2001-2018 in California
+     aprox cummulative rates per 100,000 from 2001-2018 in California
     (Excludes STD's)",
     xaxis = list(title = "Bacterial Infections"),
     yaxis = list(title = "California Rates per 100,000")
@@ -342,7 +343,7 @@ plot_ly(
 ```{r}
 #Lourdes; will create a new bar chart for most common reported Parasitic diseases rates i California
 ID_mostcommon_parasitic_fig4L <- IDtable2 %>%
-  select(c("disease","ID_type","region","rate","year")) %>%
+  select(c("disease","ID_type","region","rate","year" )
   mutate(year=as.character(year)) %>%
          filter(region=="California")%>%
   filter(ID_type=="Parasitic") %>%
@@ -376,12 +377,11 @@ ID_mostcommon_fungal_fig5L <- IDtable2 %>%
          filter(region=="California")%>%
   filter(ID_type=="Fungal") %>%
   #filter(year=="2018")
-    drop_na(rate) %>%
+   # drop_na(rate) %>%
  # group_by(disease,year) %>%
   group_by(disease) %>%
-  summarise(cumm_rate = sum (rate))
-#%>%
- # filter(cumm_rate >= 0.001)
+  summarise(cumm_rate = sum (rate))%>%
+ filter(cumm_rate >= 0.0001)
 #using plotly
 plot_ly(
   ID_mostcommon_fungal_fig5L,
