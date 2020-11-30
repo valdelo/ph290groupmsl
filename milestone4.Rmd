@@ -226,7 +226,7 @@ IDtable2 <- IDtable1 %>% mutate(ID_type = case_when(
   drop_na(ID_type)
 
 ```
-```{r}
+```{r,include=F}
 #Create ID_tableyears_grouptotal . Grouping every 3 years as a single period and change years to character, keep only total instead of male and female.
 ID_tableyears_group_total <- IDtable2 %>%
   mutate(time_period =case_when(
@@ -241,6 +241,8 @@ ID_tableyears_group_total <- IDtable2 %>%
 
 ```
 
+\newpage
+# Tables
 ```{r}
 my_table_data <- ID_tableyears_group_total %>%
   select(c("ID_type","region","rate","time_period")) %>%
@@ -299,10 +301,12 @@ kable(my_new_bayarea_table,
 
 ```
 
-
+# Figures
 
 
 \newpage
+#Figures:
+
 ```{r}
 # Lourdes. Create a table showing trends of group of diseases by time_period  in California. From all groups of diseases
 # Creating table for graph:
@@ -323,10 +327,13 @@ geom_bar(aes(fill=time_period), stat="identity", position = position_dodge()) +
   #                  ,
   #values=c("#ffd333","#ff6600","#be0f24","#f91cc7","#910ff5","#003884")) +
 labs(x="Group of Infectious disease", y = "Cummulative rate",
-title = "Trend of infectious diseases over time from 2001-2018 by type of 
+title = "Figure 1: Trend of infectious diseases over time from 2001-2018 by type of 
      Disease and time period (3 year cummulatives)")
 
 ``` 
+Figure 1 shows that of the reported infectious diseases (excluding sexually transmitted diseases) that are most commonly reported are Bacterial diseases, followed by Fungal, and then parasitic diseases. Viral diseases have a lower 
+rate. These numbers do not necessarily translates into real prevalence since 
+many diseases are not considered "reportable", due to their common prevalence and ubiquitous distribution.
 ```{r}
 #Figure 2L Trends from 2001-2018 only for Bacterial, Fungal and Parasitic conditions
 ID_tableyears_group_total_fig2L <- ID_tableyears_group_total %>%
@@ -348,7 +355,7 @@ plot_ly(
   layout(barmode="stack")%>%
   
   layout(
-    title = "Trends of Bacterial Fungal and Parasitic Diseases
+    title = "Figure 2 : Trends of Bacterial Fungal and Parasitic Diseases
     rates per 100,000 from 2001-2018 in California
     (Excludes STD's)",
     xaxis = list(title = "Years"),
@@ -356,6 +363,8 @@ plot_ly(
   )
 
 ```
+Figure 2: We could tell thet through the years, reports of bacterial diseases have increased overtime. Reasons for this increase could be related to a real increase of reportable cases, versus improved report methodology. The same goes to Fungal infections. Parasitic infections have ranged from  4.6/100,000 in 2002 to 19.33/100,000 in 2017.
+
 ```{r}
 #Lourdes most common bacterial diseases from 2001 to 2018:
 ID_mostcommon_bacterial_fig3L <- IDtable2 %>%
@@ -417,7 +426,7 @@ plot_ly(
     yaxis = list(title = "California Rates per 100,000")
   )
 ```
-```{r}
+```{r, include =FALSE}
 #Lourdes; will create a new bar chart for most common reported fungal diseases rates in California
 ID_mostcommon_fungal_fig5L <- IDtable2 %>%
   select(c("disease","ID_type","region","rate","year")) %>%
