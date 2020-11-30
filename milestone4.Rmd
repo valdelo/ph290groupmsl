@@ -552,7 +552,7 @@ Interpretation of graph: This graph looks at the overall rates per year of diffe
 ```{r}
 plotdata3<-hope%>% filter(Disease_Type == "STD (Bacterial)")
 
-ggplot(plotdata3, aes(x=Year, y=Overall_Rate))+geom_line(stat="identity", color= "#910ff5")+facet_wrap(vars(Disease_Type))+labs(x="Year", y="Overall Rate", title = "Overall rates of STDs (Bacterial) in Bay Area Counties from 2001-2018") +theme_minimal()
+ggplot(plotdata3, aes(x=Year, y=Overall_Rate))+geom_line(stat="identity", color= "#910ff5")+facet_wrap(vars(Disease_Type))+labs(x="Year", y="Overall Rate", title = "Overall rates per year of STDs (Bacterial) in Bay Area Counties from 2001-2018") +theme_minimal()
 
 ```
 Interpretation of graph: This graph looks at the Overall rates per year of bacterial STD infectious disease per year in the Bay area counties from 2001 to 2018. I created this graph to better visualize the trends in STDs.The graphs shows a very significant increase in the overall rate of STDs. however from 2013 and onward, we see an even greater increase in rates. 
