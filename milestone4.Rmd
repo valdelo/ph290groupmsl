@@ -242,18 +242,31 @@ ID_tableyears_group_total <- IDtable2 %>%
 ```
 ```{r , include=FALSE}
 
-populationv <-c(34512742, 34938290, 35388928, 35752765, 35985582, 36246822, 36552529, 36856222, 37077204, 37334578, 37678534, 38045271, 38425695, 38756940, 39076128,39328337, 39610556,39825181)
+populationv <-c(34512742, 34938290, 35388928, 35752765, 35985582, 36246822, 36552529, 36856222, 37077204, 37334578, 37678534, 38045271, 38425695, 38756940, 39076128,39328337, 39610556,39825181,34512742, 34938290, 35388928, 35752765, 35985582, 36246822, 36552529, 36856222, 37077204, 37334578, 37678534, 38045271, 38425695, 38756940, 39076128,39328337, 39610556,39825181, 34512742, 34938290, 35388928, 35752765, 35985582, 36246822, 36552529, 36856222, 37077204, 37334578, 37678534, 38045271, 38425695, 38756940, 39076128,39328337, 39610556,39825181,34512742, 34938290, 35388928, 35752765, 35985582, 36246822, 36552529, 36856222, 37077204, 37334578, 37678534, 38045271, 38425695, 38756940, 39076128,39328337, 39610556,39825181)
 
 
 ID_table3californiaonly <- IDtable2 %>%
-    filter(sex=="TOTAL")%>%
+    filter(sex=="TOTAL", county=="CALIFORNIA")%>%
  filter(ID_type=="Bacterial"|ID_type== "Parasitic"|ID_type=="Fungal"|ID_type=="Viral")%>%
  group_by(ID_type,year)%>%
-  summarize(sum(cases))
+    summarize(sum_cases=sum(cases))%>%
+  cbind(populationv)%>%
+  rename(pop_total="...4")%>%
+ mutate(rate_total= (sum_cases/pop_total)*100000)
 
-#ID_table3californiaonly <- rep_len(populationv,length.out = 108)
+#ID_table3californiaonly <- rep_len(populationv,length.out = 72)
 ```
 
+```{r}
+ID_table3californiaonlyB <- IDtable2 %>%
+    filter(sex=="TOTAL",county=="CALIFORNIA",ID_type=="Bacterial"|ID_type== "Parasitic"|ID_type=="Fungal"|ID_type=="Viral")%>%
+ group_by(ID_type,year)%>%
+ summarize(sum_cases=sum(cases), 
+           rate=sum_cases/population)
+ # cbind(populationv)%>%
+ # rename(pop_total="...4")%>%
+ #mutate(rate_total= (sum_cases/population)*100000) 
+```
 
 \newpage
 # Tables
@@ -322,7 +335,7 @@ kable(my_new_bayarea_table,
 \newpage
 #Figures:
 
-```{r}
+```{r, eval=F}
 # Lourdes. Create a table showing trends of group of diseases by time_period  in California. From all groups of diseases
 # Creating table for graph:
 ID_tableyears_group_total_fig1L <- ID_tableyears_group_total %>%
@@ -359,6 +372,10 @@ ID_tableyears_group_total_fig2L <- ID_tableyears_group_total %>%
     drop_na(rate) %>%
   group_by(ID_type,year,region) %>%
   summarise(cumm_rate = sum (rate)) 
+#Figure 2 corrected
+Figure2L_table <- ID_table3californiaonly
+
+
 #using plotly
 plot_ly(
   ID_tableyears_group_total_fig2L,
@@ -441,7 +458,7 @@ plot_ly(
     yaxis = list(title = "California Rates per 100,000")
   )
 ```
-```{r, include =FALSE}
+```{r, eval =FALSE}
 #Lourdes; will create a new bar chart for most common reported fungal diseases rates in California
 ID_mostcommon_fungal_fig5L <- IDtable2 %>%
   select(c("disease","ID_type","region","rate","year")) %>%
@@ -453,7 +470,7 @@ ID_mostcommon_fungal_fig5L <- IDtable2 %>%
  # group_by(disease,year) %>%
   group_by(disease) %>%
   #summarise(cumm_rate = sum (rate))%>%
-  mutate(average_rate <- by(IDtable3))
+  #mutate(average_rate <- by(IDtable3))
  filter(cumm_rate >= 0.0001)
 #using plotly
 plot_ly(
