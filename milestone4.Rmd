@@ -295,7 +295,7 @@ kable(my_new_table_data,
       caption="Infectious disease rates (Cases/100,000) over time by disease etiology (from 2001 - 2018 by 3 year increments)",
       format.args=list(big.mark=","))
 ```
-Interpretation: 
+ 
 
 ```{r, include=False}
 ##Mai
@@ -331,7 +331,7 @@ kable(my_new_bayarea_table,
 
 
 ```
-Interpretation: 
+
 # Figures
 
 
