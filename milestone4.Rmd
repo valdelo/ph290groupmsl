@@ -518,7 +518,7 @@ groupdata<-read_csv("idb_odp_2001-2018 (1) (1).csv")
 
 groupdatafinal<-filter(groupdata, County %in% c("ALAMEDA", "SANTA CLARA", "SAN MATEO", "SAN FRANCISCO", "MARIN", "CONTRA COSTA", "SOLANO"))
 
-testing<-3
+
   
 individualdatafinal<-filter(individualdata1, County %in% c("Alameda", "Santa Clara", "San Mateo", "San Francisco", "Marin", "Contra Costa", "Solano"))%>% select(-10)
 
@@ -542,7 +542,6 @@ plotdatatest<-data1%>%group_by(Disease_Type, Year)%>%summarize(Sum_cases=sum(Cas
 
 
 testin<-data1%>%group_by(County, Year)%>%summarize(total_pop=mean(Population))%>%group_by(Year)%>%summarise(totalp=sum(total_pop))
-#plotdata1$Real_Rate<-
 
 hope<-left_join(testin, plotdatatest, by= "Year")
 hope$Overall_Rate<-(hope$Sum_cases/hope$totalp)*100000
@@ -551,26 +550,29 @@ hope$Overall_Rate<-(hope$Sum_cases/hope$totalp)*100000
 ```
 
 ```{r}
-#plotdata<-data1%>%group_by(Disease_Type, #Year)%>%summarize(Mean_Rate=mean(Rate))
-ggplot(hope, aes(x=Year, y=Overall_Rate))+facet_wrap(vars(Disease_Type), ncol = 2)+geom_line(aes(color = Disease_Type))+labs(x="Year", y="Mean Rate", title = "Overall Rates of Infectious diseases (including STDs) in Bay Area Counties from 2001-2018") + theme_minimal()
+ggplot(hope, aes(x=Year, y=Overall_Rate))+facet_wrap(vars(Disease_Type), ncol = 2)+geom_line(aes(color = Disease_Type))+labs(x="Year", y="Overall Rate (per 100K)", title = "Overall Rates of Infectious diseases (including STDs) in Bay Area Counties from 2001-2018") + theme_minimal()
 ```
 
 Interpretation of graph: This graph looks at the overall rates per year of different types of infectious disease in the Bay area counties from 2001 to 2018. From the graphs it is noticeable that STD rates are increasing at a much greater level than other types of infectious diseases. 
 ```{r}
-plotdata2<-hope%>% filter(Disease_Type != "STD (Bacterial)")
-
-
-ggplot(plotdata2, aes(x=Year, y=Overall_Rate))+geom_line(aes(color = Disease_Type))+facet_wrap(vars(Disease_Type), ncol = 2)+labs(x="Year", y="Overall Rate", title = "Overall rates of Infectious Diseases in Bay Area Counties from 2001-2018") + theme_minimal()
+ggplot(hope, aes(x=Year, y=Overall_Rate))+facet_wrap(vars(Disease_Type), ncol = 2, scales = "free_y")+geom_line(aes(color = Disease_Type))+labs(x="Year", y="Overall Rate (per 100K)", title = "Overall Rates of Infectious diseases (including STDs) in Bay Area Counties from 2001-2018") + theme_minimal()
 ```
 Interpretation of graph: This graph looks at the overall rates per year of different types of infectious disease from 2001 to 2018 in the Bay area counties (excluding STDs). I created this graph to better visualize the trends in diseases apart from STDs. From the graphs it is noticeable that fungla rates are increasing overtime whereas Toxins, Priosns, Infectious complications remain at a very low steady level. Bacterial infection rates remain higher than the other types of disease but seem to be at a steady rate over time. 
 
 ```{r}
-plotdata3<-hope%>% filter(Disease_Type == "STD (Bacterial)")
-
-ggplot(plotdata3, aes(x=Year, y=Overall_Rate))+geom_line(stat="identity", color= "#910ff5")+facet_wrap(vars(Disease_Type))+labs(x="Year", y="Overall Rate", title = "Overall rates per year of STDs (Bacterial) in Bay Area Counties from 2001-2018") +theme_minimal()
+combineddatagender<-individualdatafinal%>%filter(Sex %in% c("Male", "Female"))%>%select(-9)%>%group_by(Sex, Year)%>%summarise(case_total=sum(Cases))
+ 
+std_set<-left_join(testin, combineddatagender, by= "Year")
+std_set$Overall_Rate<-(std_set$case_total/std_set$totalp)*100000
 
 ```
-Interpretation of graph: This graph looks at the Overall rates per year of bacterial STD infectious disease per year in the Bay area counties from 2001 to 2018. I created this graph to better visualize the trends in STDs.The graphs shows a very significant increase in the overall rate of STDs. however from 2013 and onward, we see an even greater increase in rates. 
+
+```{r}
+ggplot(std_set, aes(x=Year, y=Overall_Rate))+geom_line(aes(color = Sex))+labs(x="Year", y="Overall Rate", title = "Overall rates per year of STDs (Bacterial) in Bay Area Counties from 2001-2018 seperated by Sex") +theme_minimal()
+
+
+```
+Interpretation of graph: This graph looks at the Overall rates per year of bacterial STD infectious disease per year in the Bay area counties from 2001 to 2018, seperated by Sex. I created this graph to better visualize the trends in STDs between males and females.The graphs shows a very significant increase in the overall rate of STDs for both male and females. Prior to around 2014, it seems that female rates were higher than male rates. However from around 2014 and onward, we see an even greater increase in male rates. 
 ```{r}
 my_final_try <- 1
 ```
