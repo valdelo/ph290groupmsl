@@ -240,6 +240,20 @@ ID_tableyears_group_total <- IDtable2 %>%
   filter(sex=="TOTAL")
 
 ```
+```{r , include=FALSE}
+
+populationv <-c(34512742, 34938290, 35388928, 35752765, 35985582, 36246822, 36552529, 36856222, 37077204, 37334578, 37678534, 38045271, 38425695, 38756940, 39076128,39328337, 39610556,39825181)
+
+
+ID_table3californiaonly <- IDtable2 %>%
+    filter(sex=="TOTAL")%>%
+ filter(ID_type=="Bacterial"|ID_type== "Parasitic"|ID_type=="Fungal"|ID_type=="Viral")%>%
+ group_by(ID_type,year)%>%
+  summarize(sum(cases))
+
+#ID_table3californiaonly <- rep_len(populationv,length.out = 108)
+```
+
 
 \newpage
 # Tables
@@ -317,7 +331,7 @@ ID_tableyears_group_total_fig1L <- ID_tableyears_group_total %>%
          filter(region=="California")%>%
   drop_na(rate) %>%
   group_by(ID_type,time_period,region) %>%
-  summarise(cumm_rate = sum (rate))
+  #summarise(cumm_rate = sum (rate))
 
 ggplot(ID_tableyears_group_total_fig1L, aes(x = ID_type, y = cumm_rate)) +
 geom_bar(aes(fill=time_period), stat="identity", position = position_dodge()) +
@@ -329,7 +343,7 @@ geom_bar(aes(fill=time_period), stat="identity", position = position_dodge()) +
   #values=c("#ffd333","#ff6600","#be0f24","#f91cc7","#910ff5","#003884")) +
 labs(x="Group of Infectious disease", y = "Cummulative rate",
 title = "Figure 1: Trend of infectious diseases over time from 2001-2018 by type of 
-     Disease and time period (3 year cummulatives)")
+     Disease and time period (3 year averages)")
 
 ``` 
 Figure 1 shows that of the reported infectious diseases (excluding sexually transmitted diseases) that are most commonly reported are Bacterial diseases, followed by Fungal, and then parasitic diseases. Viral diseases have a lower 
@@ -438,7 +452,8 @@ ID_mostcommon_fungal_fig5L <- IDtable2 %>%
    # drop_na(rate) %>%
  # group_by(disease,year) %>%
   group_by(disease) %>%
-  summarise(cumm_rate = sum (rate))%>%
+  #summarise(cumm_rate = sum (rate))%>%
+  mutate(average_rate <- by(IDtable3))
  filter(cumm_rate >= 0.0001)
 #using plotly
 plot_ly(
