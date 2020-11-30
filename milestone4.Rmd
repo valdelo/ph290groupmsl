@@ -224,6 +224,7 @@ my_bayarea_table <- ID_tableyears_group_total %>%
   filter(ID_type=="Bacterial"|ID_type== "Parasitic"|ID_type=="Fungal"|ID_type=="Viral") %>%
   filter(region=="Bay_area") %>%
   drop_na(rate) %>%
+ #group_by(ID_type, time_period)%>%
   group_by(ID_type,time_period,region) %>%
   summarise(cumm_rate = sum (rate))
 
@@ -416,7 +417,7 @@ ID_mostcommon_viral_fig6L <- IDtable2 %>%
   filter(cumm_rate > 0.05)
 #using plotly
 plot_ly(
-  ID_mostcommon_viral_fig5L,
+  ID_mostcommon_viral_fig6L,
   x= ~disease,
   y= ~cumm_rate,
   color= ~disease,
@@ -457,7 +458,7 @@ combineddata$Sex<-tolower(combineddata$Sex)
 
 combineddata1<-combineddata%>%filter(Sex %in% "total")
 
-combinedatafinal<-combineddata1%>%mutate(Disease_Type = case_when(Disease %in% c("Gonorrhea", "Early Syphilis", "Chlamydia")~ "STD (Bacterial)", Disease %in% c("Shiga toxin-producing E. coli (STEC) with Hemolytic Uremic Syndrome (HUS)", "Shiga toxin-producing E. coli (STEC) without Hemolytic Uremic Syndrome (HUS)", "Anaplasmosis and Ehrlichiosis", "Hemolytic Uremic Syndrome (HUS) without evidence of Shiga toxin-producing E. coli (STEC)", "Paratyphoid Fever", "Ehrlichiosis", "Anaplasmosis" ,"Shiga Toxin Positive Feces (without culture confirmation)", "E. coli Other STEC (non-O157)",  "Yersiniosis"  ,"Vibrio Infection (non-Cholera)" , "Typhoid Fever", "Typhus Fever",  "Tularemia"  ,"Streptococcal Infection (cases in food and dairy workers)"  ,"Spotted Fever Rickettsiosis" , "Shigellosis","Salmonellosis", "Relapsing Fever" , "Q Fever" , "Psittacosis" , "Plague, human","Lyme Disease", "Listeriosis"  ,"Leptospirosis","Leprosy (Hansen's Disease)" ,"Legionellosis","E. coli O157" ,"Cholera"  , "Campylobacteriosis"  ,"Brucellosis" , "Anthrax" )~ "Bacteria", Disease %in% c("Chikungunya Virus Infection", "Dengue Virus Infection","Flavivirus Infection of Undetermined Species", "Hantavirus Infection","Hepatitis E, acute infection", "acute infection", "Rabies, human","Yellow Fever", "Yersiniosis", "Zika Virus Infection")~ "Virus", Disease %in% c("Amebiasis","Babesiosis", "Cryptosporidiosis", "Cyclosporiasis", "Cysticercosis or Taeniasis", "Malaria", "Giardiasis", "Trichinosis")~"Protozoa", Disease %in% c( 'Botulism, Foodborne', 'Botulism, Other', 'Botulism, Wound', 'Ciguatera Fish Poisoning', 'Domoic Acid Poisoning',  'Paralytic Shellfish Poisoning', 'Scombroid Fish Poisoning')~ "Toxin", Disease %in% c('Creutzfeldt-Jakob Disease and other Transmissible Spongiform Encephalopathies')~ "Prion", Disease ==  'Hemolytic Uremic Syndrome (HUS)'~ "Infectious Complication", Disease == "Coccidioidomycosis"~ "Fungal"))
+combinedatafinal<-combineddata1%>%mutate(Disease_Type = case_when(Disease %in% c("Gonorrhea", "Early Syphilis", "Chlamydia")~ "STD (Bacterial)", Disease %in% c("Shiga toxin-producing E. coli (STEC) with Hemolytic Uremic Syndrome (HUS)", "Shiga toxin-producing E. coli (STEC) without Hemolytic Uremic Syndrome (HUS)", "Anaplasmosis and Ehrlichiosis", "Hemolytic Uremic Syndrome (HUS) without evidence of Shiga toxin-producing E. coli (STEC)", "Paratyphoid Fever", "Ehrlichiosis", "Anaplasmosis" ,"Shiga Toxin Positive Feces (without culture confirmation)", "E. coli Other STEC (non-O157)",  "Yersiniosis"  ,"Vibrio Infection (non-Cholera)" , "Typhoid Fever", "Typhus Fever",  "Tularemia"  ,"Streptococcal Infection (cases in food and dairy workers)"  ,"Spotted Fever Rickettsiosis" , "Shigellosis","Salmonellosis", "Relapsing Fever" , "Q Fever" , "Psittacosis" , "Plague, human","Lyme Disease", "Listeriosis"  ,"Leptospirosis","Leprosy (Hansen's Disease)" ,"Legionellosis","E. coli O157" ,"Cholera"  , "Campylobacteriosis"  ,"Brucellosis" , "Anthrax" )~ "Bacteria", Disease %in% c("Chikungunya Virus Infection", "Dengue Virus Infection","Flavivirus Infection of Undetermined Species", "Hantavirus Infection","Hepatitis E, acute infection", "acute infection", "Rabies, human","Yellow Fever", "Zika Virus Infection")~ "Virus", Disease %in% c("Amebiasis","Babesiosis", "Cryptosporidiosis", "Cyclosporiasis", "Cysticercosis or Taeniasis", "Malaria", "Giardiasis", "Trichinosis")~"Protozoa", Disease %in% c( 'Botulism, Foodborne', 'Botulism, Other', 'Botulism, Wound', 'Ciguatera Fish Poisoning', 'Domoic Acid Poisoning',  'Paralytic Shellfish Poisoning', 'Scombroid Fish Poisoning')~ "Toxin", Disease %in% c('Creutzfeldt-Jakob Disease and other Transmissible Spongiform Encephalopathies')~ "Prion", Disease ==  'Hemolytic Uremic Syndrome (HUS)'~ "Infectious Complication", Disease == "Coccidioidomycosis"~ "Fungal"))
 
 ```
 ```{r}
@@ -465,29 +466,39 @@ data1<-combinedatafinal%>%select(-9)
 
 data1$Rate<-(data1$Cases/data1$Population)*100000
 
+plotdatatest<-data1%>%group_by(Disease_Type, Year)%>%summarize(Sum_cases=sum(Cases))
 
 
+testin<-data1%>%group_by(County, Year)%>%summarize(total_pop=mean(Population))%>%group_by(Year)%>%summarise(totalp=sum(total_pop))
+#plotdata1$Real_Rate<-
 
-plotdata<-data1%>%group_by(Disease_Type, Year)%>%summarize(Mean_Rate=mean(Rate))
-ggplot(plotdata, aes(x=Year, y=Mean_Rate))+facet_wrap(vars(Disease_Type), ncol = 2)+geom_line(aes(color = Disease_Type))+labs(x="Year", y="Mean Rate", title = "Mean Rates of Infectious diseases (including STDs) in Bay Area Counties from 2001-2018") + theme_minimal()
+hope<-left_join(testin, plotdatatest, by= "Year")
+hope$Overall_Rate<-(hope$Sum_cases/hope$totalp)*100000
+
+
 ```
-
-Interpretation of graph: This graph looks at the mean rates per year of different types of infectious disease in the Bay area counties from 2001 to 2018. From the graphs it is noticeable that STD rates are increasing at a much greater level than other types of infectious diseases. 
-```{r}
-plotdata2<-plotdata%>% filter(Disease_Type != "STD (Bacterial)")
-
-
-ggplot(plotdata2, aes(x=Year, y=Mean_Rate))+geom_line(aes(color = Disease_Type))+facet_wrap(vars(Disease_Type), ncol = 2)+labs(x="Year", y="Mean Rate", title = "Mean rates of Infectious Diseases in Bay Area Counties from 2001-2018") + theme_minimal()
-```
-Interpretation of graph: This graph looks at the mean rates per year of different types of infectious disease from 2001 to 2018 in the Bay area counties (excluding STDs). I created this graph to better visualize the trends in diseases apart from STDs. From the graphs it is noticeable that fungla rates are increasing overtime whereas Toxins, Priosns, Infectious complications remain at a very low steady level. Bacterial infection rates remain higher than the other types of disease but seem to be at a steady rate over time. 
 
 ```{r}
-plotdata3<-plotdata%>% filter(Disease_Type == "STD (Bacterial)")
+#plotdata<-data1%>%group_by(Disease_Type, #Year)%>%summarize(Mean_Rate=mean(Rate))
+ggplot(hope, aes(x=Year, y=Overall_Rate))+facet_wrap(vars(Disease_Type), ncol = 2)+geom_line(aes(color = Disease_Type))+labs(x="Year", y="Mean Rate", title = "Overall Rates of Infectious diseases (including STDs) in Bay Area Counties from 2001-2018") + theme_minimal()
+```
 
-ggplot(plotdata3, aes(x=Year, y=Mean_Rate))+geom_line(stat="identity", color= "#910ff5")+facet_wrap(vars(Disease_Type))+labs(x="Year", y="Mean Rate", title = "Mean rates of STDs (Bacterial) in Bay Area Counties from 2001-2018") +theme_minimal()
+Interpretation of graph: This graph looks at the overall rates per year of different types of infectious disease in the Bay area counties from 2001 to 2018. From the graphs it is noticeable that STD rates are increasing at a much greater level than other types of infectious diseases. 
+```{r}
+plotdata2<-hope%>% filter(Disease_Type != "STD (Bacterial)")
+
+
+ggplot(plotdata2, aes(x=Year, y=Overall_Rate))+geom_line(aes(color = Disease_Type))+facet_wrap(vars(Disease_Type), ncol = 2)+labs(x="Year", y="Overall Rate", title = "Overall rates of Infectious Diseases in Bay Area Counties from 2001-2018") + theme_minimal()
+```
+Interpretation of graph: This graph looks at the overall rates per year of different types of infectious disease from 2001 to 2018 in the Bay area counties (excluding STDs). I created this graph to better visualize the trends in diseases apart from STDs. From the graphs it is noticeable that fungla rates are increasing overtime whereas Toxins, Priosns, Infectious complications remain at a very low steady level. Bacterial infection rates remain higher than the other types of disease but seem to be at a steady rate over time. 
+
+```{r}
+plotdata3<-hope%>% filter(Disease_Type == "STD (Bacterial)")
+
+ggplot(plotdata3, aes(x=Year, y=Overall_Rate))+geom_line(stat="identity", color= "#910ff5")+facet_wrap(vars(Disease_Type))+labs(x="Year", y="Overall Rate", title = "Overall rates of STDs (Bacterial) in Bay Area Counties from 2001-2018") +theme_minimal()
 
 ```
-Interpretation of graph: This graph looks at the mean rates per year of bacterial STD infectious disease per year in the Bay area counties from 2001 to 2018. I created this graph to better visualize the trends in STDs.The graphs shows a very significant increase in the mean rate of STDs. however from 2013 and onward, we see an even greater increase in rates. 
+Interpretation of graph: This graph looks at the Overall rates per year of bacterial STD infectious disease per year in the Bay area counties from 2001 to 2018. I created this graph to better visualize the trends in STDs.The graphs shows a very significant increase in the overall rate of STDs. however from 2013 and onward, we see an even greater increase in rates. 
 ```{r}
 my_final_try <- 1
 ```
