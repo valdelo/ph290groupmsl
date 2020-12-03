@@ -285,8 +285,13 @@ ID_table3californiaonlyB <- IDtable2 %>%
 ```
 
 \newpage
+
 # Tables and codes
 ```{r}
+
+# Tables
+
+
 my_table_data <- ID_tableyears_group_total %>%
   select(c("ID_type","region","rate","time_period")) %>%
   filter(ID_type=="Bacterial"|ID_type== "Parasitic"|ID_type=="Fungal"|ID_type=="Viral") %>%
@@ -296,7 +301,8 @@ my_table_data <- ID_tableyears_group_total %>%
   summarise(cumm_rate = sum (rate))
 ```
 
-```{r}
+
+```{r, include=False}
 my_new_table_data <- my_table_data %>%
   pivot_wider(names_from=c(ID_type),values_from= "cumm_rate")
 ```
@@ -310,7 +316,9 @@ kable(my_new_table_data,
       caption="Infectious disease rates (Cases/100,000) over time by disease etiology (from 2001 - 2018 by 3 year increments)",
       format.args=list(big.mark=","))
 ```
-```{r}
+ 
+
+```{r, include=False}
 ##Mai
 my_bayarea_table <- ID_tableyears_group_total %>%
   select(c("ID_type","region","rate","time_period")) %>%
@@ -322,14 +330,14 @@ my_bayarea_table <- ID_tableyears_group_total %>%
   summarise(cumm_rate = sum (rate))
 
 ```
-```{r}
+```{r, include=False}
 
 my_new_bayarea_table <- my_bayarea_table %>%
   pivot_wider(names_from=c(ID_type),values_from= "cumm_rate")
 
 ```
 
-
+\newpage
 
 ```{r}
 # Table for  bay area only :
@@ -374,12 +382,16 @@ title = "Figure 1: Trend of infectious diseases over time from 2001-2018 by type
 ```
 Figure 1 shows that of the reported infectious diseases (excluding sexually transmitted diseases) that are most commonly reported are Bacterial diseases, followed by Fungal, and then parasitic diseases. Viral diseases have a lower 
 rate. These numbers do not necessarily translates into real prevalence since 
+
 many diseases are not considered "reportable", due to their common prevalence
 and ubiquitous distribution. Ingeneral thorugh the years the frequency of
 reported bacterial, Fungal and viral diseases have increased, while Parasitic
 have decreased, except for 2016-2018 that shows an increasing trend. 
 
 
+
+
+\newpage
 
 ```{r}
 #take 2 figure 2
@@ -421,6 +433,7 @@ Figure 2: We could tell thet through the years, reports of bacterial diseases ha
 
 
 
+\newpage
 ```{r}
 #Take 2 figure 3 #Lourdes most common bacterial diseases from 2001 to 2018:
 ID_mostcommon_bacterial_fig3Ltake2 <- IDtable3 %>%
@@ -453,7 +466,11 @@ plot_ly(
     yaxis = list(title = "Average number of cases per year")
   )
 ```
+
 Figure 3 : Among the bacterial infections, the most commonly reported one is Campilobacteriosis, followed by Salmonellosis and Shiguellosis.
+
+
+
 
 
 
@@ -484,6 +501,7 @@ plot_ly(
     yaxis = list(title = "Average number of cases per year")
   )
 ```
+
 Figure 4 ; Among parasitic infections, Giardiasis is the most common, followed by Amebiasis and cryptosporidiosis.
 
 
@@ -491,6 +509,9 @@ Figure 4 ; Among parasitic infections, Giardiasis is the most common, followed b
 #Take 2 Figure 5  will create a new bar chart for most common reported fungal diseases rates in California
 ID_mostcommon_fungal_fig5Ltake2 <- IDtable3 %>%
   select(c("disease","rate","year","cases","population","sex","ID_type")) %>%
+
+
+
   mutate(year=as.character(year)) %>%
   filter(ID_type=="Fungal") %>%
      drop_na(rate) %>%
@@ -518,7 +539,7 @@ plot_ly(
 Figure 5 ; Among Fungal infections, the only one reported in the last 18 years was Coccidiomicosis
 
 
-
+\newpage
 ```{r}
 #take 2 Lourdes; will create a new bar chart for most common reported viral diseases in California
 ID_mostcommon_viral_fig6Ltake2 <- IDtable3 %>%
@@ -557,7 +578,9 @@ reported in California until 2017
 
 \newpage
 
-```{r}
+#Line Graphs:
+
+```{r, include=False}
 
 #sandya-create disease trend over time
 
@@ -581,7 +604,7 @@ combineddata1<-combineddata%>%filter(Sex %in% "total")
 combinedatafinal<-combineddata1%>%mutate(Disease_Type = case_when(Disease %in% c("Gonorrhea", "Early Syphilis", "Chlamydia")~ "STD (Bacterial)", Disease %in% c("Shiga toxin-producing E. coli (STEC) with Hemolytic Uremic Syndrome (HUS)", "Shiga toxin-producing E. coli (STEC) without Hemolytic Uremic Syndrome (HUS)", "Anaplasmosis and Ehrlichiosis", "Hemolytic Uremic Syndrome (HUS) without evidence of Shiga toxin-producing E. coli (STEC)", "Paratyphoid Fever", "Ehrlichiosis", "Anaplasmosis" ,"Shiga Toxin Positive Feces (without culture confirmation)", "E. coli Other STEC (non-O157)",  "Yersiniosis"  ,"Vibrio Infection (non-Cholera)" , "Typhoid Fever", "Typhus Fever",  "Tularemia"  ,"Streptococcal Infection (cases in food and dairy workers)"  ,"Spotted Fever Rickettsiosis" , "Shigellosis","Salmonellosis", "Relapsing Fever" , "Q Fever" , "Psittacosis" , "Plague, human","Lyme Disease", "Listeriosis"  ,"Leptospirosis","Leprosy (Hansen's Disease)" ,"Legionellosis","E. coli O157" ,"Cholera"  , "Campylobacteriosis"  ,"Brucellosis" , "Anthrax" )~ "Bacteria", Disease %in% c("Chikungunya Virus Infection", "Dengue Virus Infection","Flavivirus Infection of Undetermined Species", "Hantavirus Infection","Hepatitis E, acute infection", "acute infection", "Rabies, human","Yellow Fever", "Zika Virus Infection")~ "Virus", Disease %in% c("Amebiasis","Babesiosis", "Cryptosporidiosis", "Cyclosporiasis", "Cysticercosis or Taeniasis", "Malaria", "Giardiasis", "Trichinosis")~"Protozoa", Disease %in% c( 'Botulism, Foodborne', 'Botulism, Other', 'Botulism, Wound', 'Ciguatera Fish Poisoning', 'Domoic Acid Poisoning',  'Paralytic Shellfish Poisoning', 'Scombroid Fish Poisoning')~ "Toxin", Disease %in% c('Creutzfeldt-Jakob Disease and other Transmissible Spongiform Encephalopathies')~ "Prion", Disease ==  'Hemolytic Uremic Syndrome (HUS)'~ "Infectious Complication", Disease == "Coccidioidomycosis"~ "Fungal"))
 
 ```
-```{r}
+```{r, include=False}
 data1<-combinedatafinal%>%select(-9)
 
 data1$Rate<-(data1$Cases/data1$Population)*100000
@@ -601,13 +624,15 @@ hope$Overall_Rate<-(hope$Sum_cases/hope$totalp)*100000
 ggplot(hope, aes(x=Year, y=Overall_Rate))+facet_wrap(vars(Disease_Type), ncol = 2)+geom_line(aes(color = Disease_Type))+labs(x="Year", y="Overall Rate (per 100K)", title = "Overall Rates of Infectious diseases (including STDs) in Bay Area Counties from 2001-2018") + theme_minimal()
 ```
 
-Interpretation of graph: This graph looks at the overall rates per year of different types of infectious disease in the Bay area counties from 2001 to 2018. From the graphs it is noticeable that STD rates are increasing at a much greater level than other types of infectious diseases. 
+Interpretation of graph: This graph looks at the overall rates per year of different types of infectious disease in the Bay area counties from 2001 to 2018, without an adjusted Y axis. I created this graph to show how much of a significant difference rates of STDs are compared to other disease types. From the graphs it is noticeable that STD rates are increasing at a much greater level than other types of infectious diseases. 
+\newpage
 ```{r}
 ggplot(hope, aes(x=Year, y=Overall_Rate))+facet_wrap(vars(Disease_Type), ncol = 2, scales = "free_y")+geom_line(aes(color = Disease_Type))+labs(x="Year", y="Overall Rate (per 100K)", title = "Overall Rates of Infectious diseases (including STDs) in Bay Area Counties from 2001-2018") + theme_minimal()
 ```
-Interpretation of graph: This graph looks at the overall rates per year of different types of infectious disease from 2001 to 2018 in the Bay area counties (excluding STDs). I created this graph to better visualize the trends in diseases apart from STDs. From the graphs it is noticeable that fungla rates are increasing overtime whereas Toxins, Priosns, Infectious complications remain at a very low steady level. Bacterial infection rates remain higher than the other types of disease but seem to be at a steady rate over time. 
+Interpretation of graph: This graph looks at the overall rates per year of different types of infectious disease from 2001 to 2018 in the Bay area counties, with the Y axis adjusted. I created this graph to better visualize the trends in diseases apart from STDs. From the graphs it is noticeable that fungal and bacterial rates are increasing overtime, along with STD rates. 
 
-```{r}
+\newpage
+```{r, include=False}
 combineddatagender<-individualdatafinal%>%filter(Sex %in% c("Male", "Female"))%>%select(-9)%>%group_by(Sex, Year)%>%summarise(case_total=sum(Cases))
  
 std_set<-left_join(testin, combineddatagender, by= "Year")
@@ -616,12 +641,10 @@ std_set$Overall_Rate<-(std_set$case_total/std_set$totalp)*100000
 ```
 
 ```{r}
-ggplot(std_set, aes(x=Year, y=Overall_Rate))+geom_line(aes(color = Sex))+labs(x="Year", y="Overall Rate", title = "Overall rates per year of STDs (Bacterial) in Bay Area Counties from 2001-2018 seperated by Sex") +theme_minimal()
+ggplot(std_set, aes(x=Year, y=Overall_Rate))+geom_line(aes(color = Sex))+labs(x="Year", y="Overall Rate (per 100K)", title = "Overall rates per year of STDs (Bacterial) in Bay Area Counties from 2001-2018 seperated by Sex") +theme_minimal()
 
 
 ```
-Interpretation of graph: This graph looks at the Overall rates per year of bacterial STD infectious disease per year in the Bay area counties from 2001 to 2018, seperated by Sex. I created this graph to better visualize the trends in STDs between males and females.The graphs shows a very significant increase in the overall rate of STDs for both male and females. Prior to around 2014, it seems that female rates were higher than male rates. However from around 2014 and onward, we see an even greater increase in male rates. 
-```{r}
-my_final_try <- 1
-```
+Interpretation of graph: This graph looks at the Overall rates per year of bacterial STD infectious disease in the Bay area counties from 2001 to 2018, seperated by Sex. I created this graph to better visualize the trends in STDs between males and females.The graphs shows a very significant increase in the overall rate of STDs for both male and females. Prior to around 2014, it seems that female rates were higher than male rates. However from around 2014 and onward, we see an even greater increase in male rates.
+
 
