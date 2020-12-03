@@ -241,6 +241,13 @@ ID_tableyears_group_total <- IDtable2 %>%
   filter(sex=="TOTAL")
 
 ```
+```{r, include=FALSE}
+IDtable3 <- IDtable2 %>%
+  filter(sex=="TOTAL",county=="CALIFORNIA")%>%
+  mutate(rate_disease= (cases/population)*100000)
+```
+
+
 ```{r , include=FALSE}
 
 populationv <-c(34512742, 34938290, 35388928, 35752765, 35985582, 36246822, 36552529, 36856222, 37077204, 37334578, 37678534, 38045271, 38425695, 38756940, 39076128,39328337, 39610556,39825181,34512742, 34938290, 35388928, 35752765, 35985582, 36246822, 36552529, 36856222, 37077204, 37334578, 37678534, 38045271, 38425695, 38756940, 39076128,39328337, 39610556,39825181, 34512742, 34938290, 35388928, 35752765, 35985582, 36246822, 36552529, 36856222, 37077204, 37334578, 37678534, 38045271, 38425695, 38756940, 39076128,39328337, 39610556,39825181,34512742, 34938290, 35388928, 35752765, 35985582, 36246822, 36552529, 36856222, 37077204, 37334578, 37678534, 38045271, 38425695, 38756940, 39076128,39328337, 39610556,39825181)
@@ -253,12 +260,21 @@ ID_table3californiaonly <- IDtable2 %>%
     summarize(sum_cases=sum(cases))%>%
   cbind(populationv)%>%
   rename(pop_total="...4")%>%
- mutate(rate_total= (sum_cases/pop_total)*100000)
+ mutate(rate_total= (sum_cases/pop_total)*100000)%>%
+mutate(time_period =case_when(
+    year %in% c(2001,2002,2003)~ "2001-2003",
+    year %in% c(2004,2005,2006)~ "2004-2006",
+    year %in% c(2007,2008,2009)~ "2007-2009",
+    year %in% c(2010,2011,2012)~ "2010-2012",
+    year %in% c(2013,2014,2015)~ "2013-2015",
+    year %in% c(2016,2017,2018)~ "2016-2018",
+     ))
 
 #ID_table3californiaonly <- rep_len(populationv,length.out = 72)
 ```
 
-```{r}
+```{r, include=FALSE}
+#this is an exercise test only
 ID_table3californiaonlyB <- IDtable2 %>%
     filter(sex=="TOTAL",county=="CALIFORNIA",ID_type=="Bacterial"|ID_type== "Parasitic"|ID_type=="Fungal"|ID_type=="Viral")%>%
  group_by(ID_type,year)%>%
@@ -270,8 +286,17 @@ ID_table3californiaonlyB <- IDtable2 %>%
 ```
 
 \newpage
+
+# Tables and codes
+```{r}
+
 # Tables
+<<<<<<< HEAD
 ```{r, include=F}
+=======
+
+
+>>>>>>> b15195376ff5255018b7e49095398bb595e85dbe
 my_table_data <- ID_tableyears_group_total %>%
   select(c("ID_type","region","rate","time_period")) %>%
   filter(ID_type=="Bacterial"|ID_type== "Parasitic"|ID_type=="Fungal"|ID_type=="Viral") %>%
@@ -337,56 +362,63 @@ kable(my_new_bayarea_table,
 
 
 \newpage
-#Figures:
-
-```{r, eval=F}
-# Lourdes. Create a table showing trends of group of diseases by time_period  in California. From all groups of diseases
-# Creating table for graph:
-ID_tableyears_group_total_fig1L <- ID_tableyears_group_total %>%
- filter(ID_type=="Bacterial"|ID_type=="Parasitic"|ID_type=="Fungal"|ID_type=="Viral")%>%
-  select(c("ID_type","region","rate","time_period")) %>%
-         filter(region=="California")%>%
-  drop_na(rate) %>%
-  group_by(ID_type,time_period,region) %>%
-  #summarise(cumm_rate = sum (rate))
-
-ggplot(ID_tableyears_group_total_fig1L, aes(x = ID_type, y = cumm_rate)) +
+#Figures and codes:
+```{r}
+# Creating table for figure 1 take 2:
+ID_tableyears_group_total_fig1Ltake2 <- ID_table3californiaonly %>%
+ select(c("ID_type","rate_total","time_period")) %>%
+   # time_period=as.character(time_period)%>%
+  drop_na(rate_total) %>%
+  group_by(time_period, ID_type)%>%
+  mutate(average_rate=sum(rate_total)/3)%>%
+  distinct(average_rate, .keep_all = TRUE)
+ 
+ggplot(ID_tableyears_group_total_fig1Ltake2, aes(x = ID_type, y = average_rate)) +
 geom_bar(aes(fill=time_period), stat="identity", position = position_dodge()) +
 #geom_col(aes(fill=), col)
   scale_y_continuous(labels = function(x) format(x,bigmark=",",scientific=FALSE))+
   #scale_fill_manual(name= "time_period") +
   scale_fill_discrete(name= "time_period")+
-  #                  ,
+  
   #values=c("#ffd333","#ff6600","#be0f24","#f91cc7","#910ff5","#003884")) +
-labs(x="Group of Infectious disease", y = "Cummulative rate",
+labs(x="Group of Infectious disease", y = "Average 3 year rate",
 title = "Figure 1: Trend of infectious diseases over time from 2001-2018 by type of 
      Disease and time period (3 year averages)")
-
-``` 
+```
 Figure 1 shows that of the reported infectious diseases (excluding sexually transmitted diseases) that are most commonly reported are Bacterial diseases, followed by Fungal, and then parasitic diseases. Viral diseases have a lower 
 rate. These numbers do not necessarily translates into real prevalence since 
-many diseases are not considered "reportable", due to their common prevalence and ubiquitous distribution.
+
+many diseases are not considered "reportable", due to their common prevalence
+and ubiquitous distribution. Ingeneral thorugh the years the frequency of
+reported bacterial, Fungal and viral diseases have increased, while Parasitic
+have decreased, except for 2016-2018 that shows an increasing trend. 
+
+
+
 
 \newpage
+
 ```{r}
+#take 2 figure 2
+
 #Figure 2L Trends from 2001-2018 only for Bacterial, Fungal and Parasitic conditions
-ID_tableyears_group_total_fig2L <- ID_tableyears_group_total %>%
-  select(c("ID_type","region","rate","year")) %>%
+ID_tableyears_group_total_fig2Ltake2 <- IDtable3 %>%
+  select(c("ID_type","rate","year","cases",)) %>%
   mutate(year=as.character(year)) %>%
-         filter(region=="California")%>%
-  filter(ID_type=="Bacterial"|ID_type== "Parasitic"|ID_type=="Fungal"|ID_type=="Viral") %>%
-    drop_na(rate) %>%
-  group_by(ID_type,year,region) %>%
-  summarise(cumm_rate = sum (rate)) 
-#Figure 2 corrected
-Figure2L_table <- ID_table3californiaonly
-
-
+        # filter(region=="California")%>%
+ filter(ID_type=="Bacterial"|ID_type== "Parasitic"|ID_type=="Fungal"|ID_type=="Viral") %>%
+    #drop_na(rate) %>%
+  group_by(ID_type, year)%>%
+  summarize(sum_cases=sum(cases))%>%
+  cbind(populationv)%>%
+  rename(pop_total="...4")%>%
+ mutate(rate_average= (sum_cases/pop_total)*100000)
+ 
 #using plotly
 plot_ly(
-  ID_tableyears_group_total_fig2L,
+  ID_tableyears_group_total_fig2Ltake2,
   x= ~year,
-  y= ~cumm_rate,
+  y= ~rate_average,
   color= ~ID_type,
   type="bar"
 ) %>%
@@ -400,138 +432,161 @@ plot_ly(
     yaxis = list(title = "California Rates per 100,000")
   )
 
+
 ```
-Figure 2: We could tell thet through the years, reports of bacterial diseases have increased overtime. Reasons for this increase could be related to a real increase of reportable cases, versus improved report methodology. The same goes to Fungal infections. Parasitic infections have ranged from  4.6/100,000 in 2002 to 19.33/100,000 in 2017.
+Figure 2: We could tell thet through the years, reports of bacterial diseases have increased overtime. Reasons for this increase could be related to a real increase of reportable cases, versus improved report methodology. The same goes to Fungal infections. Prasitic infections have decreased, except for 2016-2018 that show an increase. Viral infection reports have increased since 2016.
+
+
 
 \newpage
 ```{r}
-#Lourdes most common bacterial diseases from 2001 to 2018:
-ID_mostcommon_bacterial_fig3L <- IDtable2 %>%
-  #select(c("disease","ID_type","region","rate","year","sex","cases","population")) %>%
+#Take 2 figure 3 #Lourdes most common bacterial diseases from 2001 to 2018:
+ID_mostcommon_bacterial_fig3Ltake2 <- IDtable3 %>%
+  select(c("disease","rate","year","cases","population","sex","ID_type")) %>%
   mutate(year=as.character(year)) %>%
-         filter(region=="California")%>%
-  filter(sex=="TOTAL") %>%
   filter(ID_type=="Bacterial") %>%
-      drop_na(rate) %>%
+     drop_na(rate) %>%
  group_by(disease) %>%
-  summarise(cumm_rate = sum (rate)) %>%
+  mutate(total_cases_average = sum(cases)/18) %>%
+  distinct(total_cases_average, .keepall=TRUE)%>%
+  filter(total_cases_average>120)
+#%>%
   #summarize(cum_disease = sum(disease)) %>%
 #mutate(average_cases= (cum_disease/18))
-filter(cumm_rate >= 5)
+
 #using plotly
 plot_ly(
-  ID_mostcommon_bacterial_fig3L,
+  ID_mostcommon_bacterial_fig3Ltake2,
   x= ~disease,
-  y= ~cumm_rate,
+  y= ~total_cases_average,
   color= ~disease,
   type="bar") %>%
 # layout(barmode="stack")%>%
   
   layout(
-    title = "Most common reported Bacterial Infection
-     aprox cummulative rates per 100,000 from 2001-2018 in California
+    title = "Figure 3 :Most common reported Bacterial Infections
+     average number of cases per year from 2001-2018 in California
     (Excludes STD's)",
     xaxis = list(title = "Bacterial Infections"),
-    yaxis = list(title = "California Rates per 100,000")
+    yaxis = list(title = "Average number of cases per year")
   )
 ```
-\newpage
+
+Figure 3 : Among the bacterial infections, the most commonly reported one is Campilobacteriosis, followed by Salmonellosis and Shiguellosis.
+
+
+
+
+
+
 ```{r}
-#Lourdes; will create a new bar chart for most common reported Parasitic diseases rates i California
-ID_mostcommon_parasitic_fig4L <- IDtable2 %>%
-  select(c("disease","ID_type","region","rate","year" ))%>%
+#Take 2 Figure 4 will create a new bar chart for most common reported Parasitic diseases rates in California
+ID_mostcommon_parasitic_fig4Ltake2 <- IDtable3 %>%
+  select(c("disease","rate","year","cases","population","sex","ID_type")) %>%
   mutate(year=as.character(year)) %>%
-         filter(region=="California")%>%
   filter(ID_type=="Parasitic") %>%
-  #filter(year=="2018")
-    drop_na(rate) %>%
- # group_by(disease,year) %>%
-  group_by(disease) %>%
-  summarise(cumm_rate = sum (rate)) %>%
-  filter(cumm_rate >= 1)
+     drop_na(rate) %>%
+ group_by(disease) %>%
+  mutate(total_cases_average = sum(cases)/18) %>%
+  distinct(total_cases_average, .keepall=TRUE)%>%
+  filter(total_cases_average>14)
 #using plotly
 plot_ly(
-  ID_mostcommon_parasitic_fig4L,
+  ID_mostcommon_parasitic_fig4Ltake2,
   x= ~disease,
-  y= ~cumm_rate,
+  y= ~total_cases_average,
   color= ~disease,
   type="bar") %>%
 # layout(barmode="stack")%>%
   
   layout(
-    title = "Most common reported Parasitic Diseases
-    rates per 100,000 from 2001-2018 in California",
+    title = "Figure 4 :Most common reported Parasitic Diseases
+    yearly average 2001-2018 in California",
     xaxis = list(title = "Parasitic Infections"),
-    yaxis = list(title = "California Rates per 100,000")
+    yaxis = list(title = "Average number of cases per year")
   )
 ```
-<<<<<<< HEAD
 
+<<<<<<< HEAD
 
 ```{r, eval =FALSE}
 
 #Lourdes; will create a new bar chart for most common reported fungal diseases rates in California
 ID_mostcommon_fungal_fig5L <- IDtable2 %>%
   select(c("disease","ID_type","region","rate","year")) %>%
+=======
+Figure 4 ; Among parasitic infections, Giardiasis is the most common, followed by Amebiasis and cryptosporidiosis.
+
+
+```{r}
+#Take 2 Figure 5  will create a new bar chart for most common reported fungal diseases rates in California
+ID_mostcommon_fungal_fig5Ltake2 <- IDtable3 %>%
+  select(c("disease","rate","year","cases","population","sex","ID_type")) %>%
+
+
+
+>>>>>>> b15195376ff5255018b7e49095398bb595e85dbe
   mutate(year=as.character(year)) %>%
-         filter(region=="California")%>%
   filter(ID_type=="Fungal") %>%
-  #filter(year=="2018")
-   # drop_na(rate) %>%
- # group_by(disease,year) %>%
-  group_by(disease) %>%
-  #summarise(cumm_rate = sum (rate))%>%
-  #mutate(average_rate <- by(IDtable3))
- filter(cumm_rate >= 0.0001)
+     drop_na(rate) %>%
+ group_by(disease) %>%
+  mutate(total_cases_average = sum(cases)/18) %>%
+  distinct(total_cases_average, .keepall=TRUE)
+
 #using plotly
 plot_ly(
-  ID_mostcommon_fungal_fig5L,
+  ID_mostcommon_fungal_fig5Ltake2,
   x= ~disease,
-  y= ~cumm_rate,
+  y= ~total_cases_average,
   color= ~disease,
   type="bar")%>%
 # layout(barmode="stack")%>%
   
   layout(
-    title = "Most common reported Fungal Infections
+    title = "Figure 5 : Most common reported Fungal Infections
     rates per 100,000 from 2001-2018 in California
     (Excludes STD's)",
     xaxis = list(title = "Fungal infections"),
-    yaxis = list(title = "California Rates per 100,000")
+    yaxis = list(title = "average numeber of cases per year")
   )
 ```
+Figure 5 ; Among Fungal infections, the only one reported in the last 18 years was Coccidiomicosis
+ok
 
 \newpage
 ```{r}
-#Lourdes; will create a new bar chart for most common reported viral diseases rates i California
-ID_mostcommon_viral_fig6L <- IDtable2 %>%
-  select(c("disease","ID_type","region","rate","year")) %>%
+#take 2 Lourdes; will create a new bar chart for most common reported viral diseases in California
+ID_mostcommon_viral_fig6Ltake2 <- IDtable3 %>%
+  select(c("disease","rate","year","cases","population","sex","ID_type")) %>%
   mutate(year=as.character(year)) %>%
-         filter(region=="California")%>%
   filter(ID_type=="Viral") %>%
-  #filter(year=="2018")
-    drop_na(rate) %>%
- # group_by(disease,year) %>%
-  group_by(disease) %>%
-  summarise(cumm_rate = sum (rate)) %>%
-  filter(cumm_rate > 0.05)
+     drop_na(rate) %>%
+ group_by(disease) %>%
+  mutate(total_cases = sum(cases)) %>%
+  distinct(total_cases, .keepall=TRUE)
+  #filter(total_cases>14)
+  
+  
 #using plotly
 plot_ly(
-  ID_mostcommon_viral_fig6L,
+  ID_mostcommon_viral_fig6Ltake2,
   x= ~disease,
-  y= ~cumm_rate,
+  y= ~total_cases,
   color= ~disease,
   type="bar")%>%
 # layout(barmode="stack")%>%
   
   layout(
-    title = "Most common reported Viral Infections
-    rates per 100,000 from 2001-2018 in California
+    title = "Figure 6 :Most common reported Viral Infections
+    total cases from 2001-2018 in California
     (Excludes STD's)",
     xaxis = list(title = "Viral infections"),
-    yaxis = list(title = "California Rates per 100,000")
+    yaxis = list(title = "Total cases")
   )
 ```
+Figure 6 : Among viral infections, the most commonly reported was Dengue virus infection. The newly described virus Chikungunya and Zika virus were not
+reported in California until 2017
+
 
 
 
