@@ -537,7 +537,7 @@ plot_ly(
   )
 ```
 Figure 5 ; Among Fungal infections, the only one reported in the last 18 years was Coccidiomicosis
-
+ok
 
 \newpage
 ```{r}
