@@ -302,7 +302,7 @@ my_table_data <- ID_tableyears_group_total %>%
 ```
 
 
-```{r, include=False}
+```{r, include=FALSE}
 my_new_table_data <- my_table_data %>%
   pivot_wider(names_from=c(ID_type),values_from= "cumm_rate")
 ```
