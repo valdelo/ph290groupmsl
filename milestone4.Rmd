@@ -355,7 +355,7 @@ kable(my_new_bayarea_table,
 
 ```
 
-# Figures
+# Figures and code
 
 
 \newpage
@@ -431,7 +431,11 @@ plot_ly(
 
 
 ```
-Figure 2: We could tell thet through the years, reports of bacterial diseases have increased overtime. Reasons for this increase could be related to a real increase of reportable cases, versus improved report methodology. The same goes to Fungal infections. Prasitic infections have decreased, except for 2016-2018 that show an increase. Viral infection reports have increased since 2016.
+Figure 2: We could tell thet through the years, reports of bacterial diseases
+have increased overtime. Reasons for this increase could be related to a real increase of reportable cases, versus improved report methodology. The same goes
+to Fungal infections. Prasitic infections have decreased, except for 2016-2018 
+that show an increase. Viral infection reports have increased since 2016 due to
+new viral reportable conditions like Zika and Chikungunya .
 
 
 
@@ -519,10 +523,6 @@ Figure 4 ; Among parasitic infections, Giardiasis is the most common, followed b
 #Take 2 Figure 5  will create a new bar chart for most common reported fungal diseases rates in California
 ID_mostcommon_fungal_fig5Ltake2 <- IDtable3 %>%
   select(c("disease","rate","year","cases","population","sex","ID_type")) %>%
-
-
-
->>>>>>> b15195376ff5255018b7e49095398bb595e85dbe
   mutate(year=as.character(year)) %>%
   filter(ID_type=="Fungal") %>%
      drop_na(rate) %>%
@@ -541,7 +541,7 @@ plot_ly(
   
   layout(
     title = "Figure 5 : Most common reported Fungal Infections
-    rates per 100,000 from 2001-2018 in California
+    from 2001-2018 in California
     (Excludes STD's)",
     xaxis = list(title = "Fungal infections"),
     yaxis = list(title = "average numeber of cases per year")
