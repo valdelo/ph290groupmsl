@@ -5,6 +5,7 @@ date: "11/30/2020"
 output:
   html_document:
     df_print: paged
+  pdf_document: default
 ---
 
 # Research questions / Problem statement:
@@ -291,7 +292,6 @@ ID_table3californiaonlyB <- IDtable2 %>%
 
 # Tables
 
-
 my_table_data <- ID_tableyears_group_total %>%
   select(c("ID_type","region","rate","time_period")) %>%
   filter(ID_type=="Bacterial"|ID_type== "Parasitic"|ID_type=="Fungal"|ID_type=="Viral") %>%
@@ -302,7 +302,9 @@ my_table_data <- ID_tableyears_group_total %>%
 ```
 
 
-```{r, include=FALSE}
+
+```{r, include=F}
+
 my_new_table_data <- my_table_data %>%
   pivot_wider(names_from=c(ID_type),values_from= "cumm_rate")
 ```
@@ -318,7 +320,7 @@ kable(my_new_table_data,
 ```
  
 
-```{r, include=False}
+```{r, include=F}
 ##Mai
 my_bayarea_table <- ID_tableyears_group_total %>%
   select(c("ID_type","region","rate","time_period")) %>%
@@ -330,7 +332,7 @@ my_bayarea_table <- ID_tableyears_group_total %>%
   summarise(cumm_rate = sum (rate))
 
 ```
-```{r, include=False}
+```{r, include=F}
 
 my_new_bayarea_table <- my_bayarea_table %>%
   pivot_wider(names_from=c(ID_type),values_from= "cumm_rate")
@@ -502,6 +504,14 @@ plot_ly(
   )
 ```
 
+<<<<<<< HEAD
+
+```{r, eval =FALSE}
+
+#Lourdes; will create a new bar chart for most common reported fungal diseases rates in California
+ID_mostcommon_fungal_fig5L <- IDtable2 %>%
+  select(c("disease","ID_type","region","rate","year")) %>%
+=======
 Figure 4 ; Among parasitic infections, Giardiasis is the most common, followed by Amebiasis and cryptosporidiosis.
 
 
@@ -512,6 +522,7 @@ ID_mostcommon_fungal_fig5Ltake2 <- IDtable3 %>%
 
 
 
+>>>>>>> b15195376ff5255018b7e49095398bb595e85dbe
   mutate(year=as.character(year)) %>%
   filter(ID_type=="Fungal") %>%
      drop_na(rate) %>%
@@ -580,7 +591,7 @@ reported in California until 2017
 
 #Line Graphs:
 
-```{r, include=False}
+```{r, include=F}
 
 #sandya-create disease trend over time
 
@@ -604,7 +615,7 @@ combineddata1<-combineddata%>%filter(Sex %in% "total")
 combinedatafinal<-combineddata1%>%mutate(Disease_Type = case_when(Disease %in% c("Gonorrhea", "Early Syphilis", "Chlamydia")~ "STD (Bacterial)", Disease %in% c("Shiga toxin-producing E. coli (STEC) with Hemolytic Uremic Syndrome (HUS)", "Shiga toxin-producing E. coli (STEC) without Hemolytic Uremic Syndrome (HUS)", "Anaplasmosis and Ehrlichiosis", "Hemolytic Uremic Syndrome (HUS) without evidence of Shiga toxin-producing E. coli (STEC)", "Paratyphoid Fever", "Ehrlichiosis", "Anaplasmosis" ,"Shiga Toxin Positive Feces (without culture confirmation)", "E. coli Other STEC (non-O157)",  "Yersiniosis"  ,"Vibrio Infection (non-Cholera)" , "Typhoid Fever", "Typhus Fever",  "Tularemia"  ,"Streptococcal Infection (cases in food and dairy workers)"  ,"Spotted Fever Rickettsiosis" , "Shigellosis","Salmonellosis", "Relapsing Fever" , "Q Fever" , "Psittacosis" , "Plague, human","Lyme Disease", "Listeriosis"  ,"Leptospirosis","Leprosy (Hansen's Disease)" ,"Legionellosis","E. coli O157" ,"Cholera"  , "Campylobacteriosis"  ,"Brucellosis" , "Anthrax" )~ "Bacteria", Disease %in% c("Chikungunya Virus Infection", "Dengue Virus Infection","Flavivirus Infection of Undetermined Species", "Hantavirus Infection","Hepatitis E, acute infection", "acute infection", "Rabies, human","Yellow Fever", "Zika Virus Infection")~ "Virus", Disease %in% c("Amebiasis","Babesiosis", "Cryptosporidiosis", "Cyclosporiasis", "Cysticercosis or Taeniasis", "Malaria", "Giardiasis", "Trichinosis")~"Protozoa", Disease %in% c( 'Botulism, Foodborne', 'Botulism, Other', 'Botulism, Wound', 'Ciguatera Fish Poisoning', 'Domoic Acid Poisoning',  'Paralytic Shellfish Poisoning', 'Scombroid Fish Poisoning')~ "Toxin", Disease %in% c('Creutzfeldt-Jakob Disease and other Transmissible Spongiform Encephalopathies')~ "Prion", Disease ==  'Hemolytic Uremic Syndrome (HUS)'~ "Infectious Complication", Disease == "Coccidioidomycosis"~ "Fungal"))
 
 ```
-```{r, include=False}
+```{r, include=F}
 data1<-combinedatafinal%>%select(-9)
 
 data1$Rate<-(data1$Cases/data1$Population)*100000
@@ -632,7 +643,7 @@ ggplot(hope, aes(x=Year, y=Overall_Rate))+facet_wrap(vars(Disease_Type), ncol = 
 Interpretation of graph: This graph looks at the overall rates per year of different types of infectious disease from 2001 to 2018 in the Bay area counties, with the Y axis adjusted. I created this graph to better visualize the trends in diseases apart from STDs. From the graphs it is noticeable that fungal and bacterial rates are increasing overtime, along with STD rates. 
 
 \newpage
-```{r, include=False}
+```{r, include=F}
 combineddatagender<-individualdatafinal%>%filter(Sex %in% c("Male", "Female"))%>%select(-9)%>%group_by(Sex, Year)%>%summarise(case_total=sum(Cases))
  
 std_set<-left_join(testin, combineddatagender, by= "Year")
