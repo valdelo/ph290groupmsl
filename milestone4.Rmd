@@ -90,9 +90,11 @@ id_data$`upper_95%_ci` <- round(id_data$`upper_95%_ci`,2)
 # Creating variables for data analysis:
 *We created new groups of variables to facilitate data presentation and analysis.
 The new groups of variables are:  
-1. Name of california region, for the 10 different California regions  
+1. Name of california region, for the 10 different California regions.
+
 2. Type of infectious disease : to group each of thereported diseases by "type
 of disease" , following conventional microbiology classification.
+
 3. We also grouped years in groups of 3.
 
 # California regions:
@@ -502,7 +504,8 @@ plot_ly(
     yaxis = list(title = "Average number of cases per year")
   )
 ```
-
+Figure 4: The most common parasitic disease is Giardiasis, followed by Amebiasis
+and cryptosporidiosis.
 
 ```{r}
 #Take 2 Figure 5  will create a new bar chart for most common reported fungal diseases rates in California
@@ -599,7 +602,7 @@ combineddata$Sex<-tolower(combineddata$Sex)
 
 combineddata1<-combineddata%>%filter(Sex %in% "total")
 
-combinedatafinal<-combineddata1%>%mutate(Disease_Type = case_when(Disease %in% c("Gonorrhea", "Early Syphilis", "Chlamydia")~ "STD (Bacterial)", Disease %in% c("Shiga toxin-producing E. coli (STEC) with Hemolytic Uremic Syndrome (HUS)", "Shiga toxin-producing E. coli (STEC) without Hemolytic Uremic Syndrome (HUS)", "Anaplasmosis and Ehrlichiosis", "Hemolytic Uremic Syndrome (HUS) without evidence of Shiga toxin-producing E. coli (STEC)", "Paratyphoid Fever", "Ehrlichiosis", "Anaplasmosis" ,"Shiga Toxin Positive Feces (without culture confirmation)", "E. coli Other STEC (non-O157)",  "Yersiniosis"  ,"Vibrio Infection (non-Cholera)" , "Typhoid Fever", "Typhus Fever",  "Tularemia"  ,"Streptococcal Infection (cases in food and dairy workers)"  ,"Spotted Fever Rickettsiosis" , "Shigellosis","Salmonellosis", "Relapsing Fever" , "Q Fever" , "Psittacosis" , "Plague, human","Lyme Disease", "Listeriosis"  ,"Leptospirosis","Leprosy (Hansen's Disease)" ,"Legionellosis","E. coli O157" ,"Cholera"  , "Campylobacteriosis"  ,"Brucellosis" , "Anthrax" )~ "Bacteria", Disease %in% c("Chikungunya Virus Infection", "Dengue Virus Infection","Flavivirus Infection of Undetermined Species", "Hantavirus Infection","Hepatitis E, acute infection", "acute infection", "Rabies, human","Yellow Fever", "Zika Virus Infection")~ "Virus", Disease %in% c("Amebiasis","Babesiosis", "Cryptosporidiosis", "Cyclosporiasis", "Cysticercosis or Taeniasis", "Malaria", "Giardiasis", "Trichinosis")~"Protozoa", Disease %in% c( 'Botulism, Foodborne', 'Botulism, Other', 'Botulism, Wound', 'Ciguatera Fish Poisoning', 'Domoic Acid Poisoning',  'Paralytic Shellfish Poisoning', 'Scombroid Fish Poisoning')~ "Toxin", Disease %in% c('Creutzfeldt-Jakob Disease and other Transmissible Spongiform Encephalopathies')~ "Prion", Disease ==  'Hemolytic Uremic Syndrome (HUS)'~ "Infectious Complication", Disease == "Coccidioidomycosis"~ "Fungal"))
+combinedatafinal<-combineddata1%>%mutate(Disease_Type = case_when(Disease %in% c("Gonorrhea", "Early Syphilis", "Chlamydia")~ "STD (Bacterial)", Disease %in% c("Shiga toxin-producing E. coli (STEC) with Hemolytic Uremic Syndrome (HUS)",      "Shiga toxin-producing E. coli (STEC) without Hemolytic Uremic Syndrome (HUS)", "Anaplasmosis and Ehrlichiosis", "Hemolytic Uremic Syndrome (HUS) without evidence of Shiga toxin-producing E. coli (STEC)", "Paratyphoid Fever", "Ehrlichiosis", "Anaplasmosis" ,"Shiga Toxin Positive Feces (without culture confirmation)", "E. coli Other STEC (non-O157)",  "Yersiniosis"  ,"Vibrio Infection (non-Cholera)" , "Typhoid Fever", "Typhus Fever",  "Tularemia"  ,"Streptococcal Infection (cases in food and dairy workers)"  ,"Spotted Fever Rickettsiosis" , "Shigellosis","Salmonellosis", "Relapsing Fever" , "Q Fever" , "Psittacosis" , "Plague, human","Lyme Disease", "Listeriosis"  ,"Leptospirosis","Leprosy (Hansen's Disease)" ,"Legionellosis","E. coli O157" ,"Cholera"  , "Campylobacteriosis"  ,"Brucellosis" , "Anthrax" )~ "Bacteria", Disease %in% c("Chikungunya Virus Infection", "Dengue Virus Infection","Flavivirus Infection of Undetermined Species", "Hantavirus Infection","Hepatitis E, acute infection", "acute infection", "Rabies, human","Yellow Fever", "Zika Virus Infection")~ "Virus", Disease %in% c("Amebiasis","Babesiosis", "Cryptosporidiosis", "Cyclosporiasis", "Cysticercosis or Taeniasis", "Malaria", "Giardiasis", "Trichinosis")~"Protozoa", Disease %in% c( 'Botulism, Foodborne', 'Botulism, Other', 'Botulism, Wound', 'Ciguatera Fish Poisoning', 'Domoic Acid Poisoning',  'Paralytic Shellfish Poisoning', 'Scombroid Fish Poisoning')~ "Toxin", Disease %in% c('Creutzfeldt-Jakob Disease and other Transmissible Spongiform Encephalopathies')~ "Prion", Disease ==  'Hemolytic Uremic Syndrome (HUS)'~ "Infectious Complication", Disease == "Coccidioidomycosis"~ "Fungal"))
 
 ```
 ```{r, include=F}
@@ -622,12 +625,17 @@ hope$Overall_Rate<-(hope$Sum_cases/hope$totalp)*100000
 ggplot(hope, aes(x=Year, y=Overall_Rate))+facet_wrap(vars(Disease_Type), ncol = 2)+geom_line(aes(color = Disease_Type))+labs(x="Year", y="Overall Rate (per 100K)", title = "Overall Rates of Infectious diseases (including STDs) in Bay Area Counties from 2001-2018") + theme_minimal()
 ```
 
-Interpretation of graph: This graph looks at the overall rates per year of different types of infectious disease in the Bay area counties from 2001 to 2018, without an adjusted Y axis. I created this graph to show how much of a significant difference rates of STDs are compared to other disease types. From the graphs it is noticeable that STD rates are increasing at a much greater level than other types of infectious diseases. 
+Interpretation of graph: This graph looks at the overall rates per year of 
+different types of infectious disease in the Bay area counties from 2001 to 2018, without an adjusted Y axis. I created this graph to show how much of a 
+significant difference rates of STDs are compared to other disease types.
+From the graphs it is noticeable that STD rates are increasing at a much greater level than other types of infectious diseases. 
 \newpage
 ```{r}
 ggplot(hope, aes(x=Year, y=Overall_Rate))+facet_wrap(vars(Disease_Type), ncol = 2, scales = "free_y")+geom_line(aes(color = Disease_Type))+labs(x="Year", y="Overall Rate (per 100K)", title = "Overall Rates of Infectious diseases (including STDs) in Bay Area Counties from 2001-2018") + theme_minimal()
 ```
-Interpretation of graph: This graph looks at the overall rates per year of different types of infectious disease from 2001 to 2018 in the Bay area counties, with the Y axis adjusted. I created this graph to better visualize the trends in diseases apart from STDs. From the graphs it is noticeable that fungal and bacterial rates are increasing overtime, along with STD rates. 
+Interpretation of graph: This graph looks at the overall rates per year of 
+different types of infectious disease from 2001 to 2018 in the Bay area counties, with the Y axis adjusted. I created this graph to better visualize the trends in diseases apart from STDs. From the graphs it is noticeable that fungal and 
+bacterial rates are increasing overtime, along with STD rates. 
 
 \newpage
 ```{r, include=F}
@@ -643,6 +651,11 @@ ggplot(std_set, aes(x=Year, y=Overall_Rate))+geom_line(aes(color = Sex))+labs(x=
 
 
 ```
-Interpretation of graph: This graph looks at the Overall rates per year of bacterial STD infectious disease in the Bay area counties from 2001 to 2018, seperated by Sex. I created this graph to better visualize the trends in STDs between males and females.The graphs shows a very significant increase in the overall rate of STDs for both male and females. Prior to around 2014, it seems that female rates were higher than male rates. However from around 2014 and onward, we see an even greater increase in male rates.
+Interpretation of graph: This graph looks at the Overall rates per year of 
+bacterial STD infectious disease in the Bay area counties from 2001 to 2018, seperated by Sex. I created this graph to better visualize the trends in STDs 
+between males and females.The graphs shows a very significant increase in the 
+overall rate of STDs for both male and females. Prior to around 2014, it seems
+that female rates were higher than male rates. However from around 2014 and 
+onward, we see an even greater increase in male rates.
 
 
