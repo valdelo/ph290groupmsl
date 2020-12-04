@@ -13,7 +13,7 @@ Infectious diseases are a very important public health issue. So we want to
 examine overall communicable disease rates and trends over time of Infectious diseases reported in california. Sexually transmitted diseases will be analized separately from other groups of infectious diseases.
 
 # Datasets to be used :
-1. Infectious Diseases by County, Year and Sex (in California)2001-2018
+1.Infectious Diseases by County, Year and Sex (in California)2001-2018
    Source : https://data.chhs.ca.gov/dataset/infectious-disease
    Raw format of dataset:
   https://data.chhs.ca.gov/dataset/03e61434-7db8-4a53-a3e2-1d4d36d6848d/resource
@@ -21,7 +21,8 @@ examine overall communicable disease rates and trends over time of Infectious di
   Name/source: CHHS Open Data
   Number of columns: 10
   Number of rows: 154,344
-2.STD's in California by disease, vounty, year and sex. Dtasethas  case counts
+  
+2.STD's in California by disease, vounty, year and sex. Dataset: case counts
   and rates for sexually transmitted diseases (chlamydia, gonorrhea, and all
   forms of syphilis) reported for California residents.
   https://data.chhs.ca.gov/dataset/stds-in-california-by-disease-county-year-and
@@ -51,8 +52,8 @@ id_data <- read.csv("idb_odp_2001-2018 (1) (1).csv")
 ```{r, echo=FALSE}
 # Now will look at the dataframe from the environment plus the first five rows
 # using the head function. Noticed the following:
-#The "rate" column has a lot of "dashes" or missing values because of 0 cases for 
-#some diseases. Will look at all the values to see using the function unique()
+#The "rate" column has a lot of "dashes" or missing values because of 0 cases
+#forsome diseases. Will look at all the values to see using the function unique
 #unique(id_data$rate), and other than a dash, we see empty cells and "SC"
 # Will now clean the data by eliminating empty values ," ", "-" or NA 
 # For correcting the NA values I will have to correct at the top of this code
@@ -89,10 +90,12 @@ id_data$`upper_95%_ci` <- round(id_data$`upper_95%_ci`,2)
 # Creating variables for data analysis:
 *We created new groups of variables to facilitate data presentation and analysis.
 The new groups of variables are:  
-Name of california region, for the 10 different California regions  
-Type of infectious disease : to group each of thereported diseases by "type of disease" , following conventional microbiology classification.
+1. Name of california region, for the 10 different California regions  
+2. Type of infectious disease : to group each of thereported diseases by "type
+of disease" , following conventional microbiology classification.
+3. We also grouped years in groups of 3.
 
-The California regions are as follows:
+# California regions:
 Superior <- "NEVADA","PLACER","PLUMAS","SACRAMENTO","SHASTA","SIERRA",
 "SISKIYOU","SUTTER","TEHAMA", "YOLO", "YUBA", "MODOC", "EL DORADO", "BUTTE",
 "GLENN", "LASSEN"
@@ -100,7 +103,7 @@ North Coast <- "DEL NORTE", "HUMBOLDT", "LAKE", "MENDOCINO", "NAPA","SONOMA",
 "TRINITY"
 Bay area<- "ALAMEDA","CONTRA COSTA", "MARIN", "SAN FRANCISCO", "SAN MATEO", 
              "SANTA CLARA", "SOLANO"
-North San Joaquin Valley <- "ALPINE", "AMADOR", "CALAVERAS", "MADERA", "MARIPOSA",
+North San Joaquin Valley <- "ALPINE", "AMADOR", "CALAVERAS", "MADERA","MARIPOSA",
 "MERCED", "MONO","SAN JOAQUIN", "STANISLAUS", "TUOLUMNE" 
 Central Coast <- "MONTEREY", "SAN BENITO", "SAN LUIS OBISPO", "SANTA BARBARA",
              "SANTA CRUZ", "VENTURA"
@@ -109,9 +112,9 @@ Inland Empire<- "RIVERSIDE", "SAN BERNARDINO"
 LA County <- "LOS ANGELES"
 Orange County <- "ORANGE"
 San Diego and Imperial County <- "IMPERIAL", "SAN DIEGO"
-We will also have california as a total.
+We will also have "California" as a total for the State.
 
-The groups of infectious diseases will be as follows:
+#Groups of infectious diseases:
 1. Parasitic <- c("Amebiasis","Babesiosis", "Cryptosporidiosis", "Cyclosporiasis",
 "Cysticercosis or Taeniasis", "Malaria", "Giardiasis", "Trichinosis")
 2. Toxin_related <- c("Botulism, Foodborne","Botulism, Other", "Botulism, Wound",
@@ -133,8 +136,8 @@ Rickettsiosis", "Streptococcal Infection (cases in food and dairy workers)",
 toxin-producing E. coli (STEC) without Hemolytic Uremic Syndrome (HUS)",
 "Vibrio Infection (non-Cholera)", "Shiga Toxin Positive Feces (without culture
 confirmation)","Yersiniosis")
-6. Infectious_complications <- c("Hemolytic Uremic Syndrome (HUS) without evidence
-of Shiga toxin-producing E. coli (STEC)","Hemolytic Uremic Syndrome (HUS)", 
+6. Infectious_complications <- c("Hemolytic Uremic Syndrome (HUS) without 
+evidence of Shiga toxin-producing E. coli (STEC)","Hemolytic Uremic Syndrome(HUS)", 
 "Shiga toxin-producing E. coli (STEC) with Hemolytic Uremic Syndrome (HUS)")
 ```{r include=F}
 #Creating the first variable "region"
