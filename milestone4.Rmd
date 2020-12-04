@@ -356,7 +356,7 @@ kable(my_new_bayarea_table,
 ```
 
 \newpage
-#Figures and codes:
+#Figures and codes: 
 ```{r}
 # Creating table for figure 1 take 2:
 ID_tableyears_group_total_fig1Ltake2 <- ID_table3californiaonly %>%
