@@ -508,16 +508,6 @@ plot_ly(
   )
 ```
 
-<<<<<<< HEAD
-
-```{r, eval =FALSE}
-
-#Lourdes; will create a new bar chart for most common reported fungal diseases rates in California
-ID_mostcommon_fungal_fig5L <- IDtable2 %>%
-  select(c("disease","ID_type","region","rate","year")) %>%
-=======
-Figure 4 ; Among parasitic infections, Giardiasis is the most common, followed by Amebiasis and cryptosporidiosis.
-
 
 ```{r}
 #Take 2 Figure 5  will create a new bar chart for most common reported fungal diseases rates in California
@@ -527,7 +517,7 @@ ID_mostcommon_fungal_fig5Ltake2 <- IDtable3 %>%
   filter(ID_type=="Fungal") %>%
      drop_na(rate) %>%
  group_by(disease) %>%
-  mutate(total_cases_average = sum(cases)/18) %>%
+mutate(total_cases_average = sum(cases)/18) %>%
   distinct(total_cases_average, .keepall=TRUE)
 
 #using plotly
@@ -535,7 +525,7 @@ plot_ly(
   ID_mostcommon_fungal_fig5Ltake2,
   x= ~disease,
   y= ~total_cases_average,
-  color= ~disease,
+   color= ~disease,
   type="bar")%>%
 # layout(barmode="stack")%>%
   
@@ -547,8 +537,9 @@ plot_ly(
     yaxis = list(title = "average numeber of cases per year")
   )
 ```
-Figure 5 ; Among Fungal infections, the only one reported in the last 18 years was Coccidiomicosis
-ok
+Figure 5 ; Among Fungal infections, the only one reported in the last 18 years 
+was Coccidiomicosis, and the average number of yearly cases is aproximately 3590 cases reported /year
+
 
 \newpage
 ```{r}
