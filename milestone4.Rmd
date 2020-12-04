@@ -139,6 +139,12 @@ confirmation)","Yersiniosis")
 6. Infectious_complications <- c("Hemolytic Uremic Syndrome (HUS) without 
 evidence of Shiga toxin-producing E. coli (STEC)","Hemolytic Uremic Syndrome(HUS)", 
 "Shiga toxin-producing E. coli (STEC) with Hemolytic Uremic Syndrome (HUS)")
+
+# Years groups:
+"2001-2003", "2004-2006", "2007-2009", "2010-2012", "2013-2015", "2016-2018"
+
+\newpage
+
 ```{r include=F}
 #Creating the first variable "region"
 #We will group the counties that correspond to the California regions, as done
@@ -276,17 +282,6 @@ mutate(time_period =case_when(
 #ID_table3californiaonly <- rep_len(populationv,length.out = 72)
 ```
 
-```{r, include=FALSE}
-#this is an exercise test only
-ID_table3californiaonlyB <- IDtable2 %>%
-    filter(sex=="TOTAL",county=="CALIFORNIA",ID_type=="Bacterial"|ID_type== "Parasitic"|ID_type=="Fungal"|ID_type=="Viral")%>%
- group_by(ID_type,year)%>%
- summarize(sum_cases=sum(cases), 
-           rate=sum_cases/population)
- # cbind(populationv)%>%
- # rename(pop_total="...4")%>%
- #mutate(rate_total= (sum_cases/population)*100000) 
-```
 
 \newpage
 
@@ -357,9 +352,6 @@ kable(my_new_bayarea_table,
 
 
 ```
-
-# Figures and code
-
 
 \newpage
 #Figures and codes:
@@ -519,7 +511,7 @@ ID_mostcommon_fungal_fig5Ltake2 <- IDtable3 %>%
   mutate(year=as.character(year)) %>%
   filter(ID_type=="Fungal") %>%
      drop_na(rate) %>%
- group_by(disease) %>%
+ group_by( disease) %>%
 mutate(total_cases_average = sum(cases)/18) %>%
   distinct(total_cases_average, .keepall=TRUE)
 
@@ -527,7 +519,7 @@ mutate(total_cases_average = sum(cases)/18) %>%
 plot_ly(
   ID_mostcommon_fungal_fig5Ltake2,
   x= ~disease,
-  y= ~total_cases_average,
+   y= ~total_cases_average,
    color= ~disease,
   type="bar")%>%
 # layout(barmode="stack")%>%
@@ -546,7 +538,8 @@ was Coccidiomicosis, and the average number of yearly cases is aproximately 3590
 
 \newpage
 ```{r}
-#take 2 Lourdes; will create a new bar chart for most common reported viral diseases in California
+#take 2 Lourdes; will create a new bar chart for most common reported viral 
+#diseases in California
 ID_mostcommon_viral_fig6Ltake2 <- IDtable3 %>%
   select(c("disease","rate","year","cases","population","sex","ID_type")) %>%
   mutate(year=as.character(year)) %>%
