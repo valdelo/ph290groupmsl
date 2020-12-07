@@ -21,12 +21,18 @@ examine overall communicable disease rates and trends over time of Infectious di
   Name/source: CHHS Open Data
   Number of columns: 10
   Number of rows: 154,344
+  Timing: The years included in this dataset is 2001 to 2018
   
-2.STD's in California by disease, vounty, year and sex. Dataset: case counts
+2.STD's in California by disease, county, year and sex. Dataset: case counts
   and rates for sexually transmitted diseases (chlamydia, gonorrhea, and all
   forms of syphilis) reported for California residents.
   https://data.chhs.ca.gov/dataset/stds-in-california-by-disease-county-year-and
   -sex
+  
+  Name/Source: CHHS Open Data
+  Number of Columns: 10
+  Number of Rows: 9,558
+  Timing: The years included in this dataset is 2001 to 2018
   
 ```{r setup, include=F}
 knitr::opts_chunk$set(echo = TRUE)
@@ -581,7 +587,10 @@ reported in California until 2017
 
 \newpage
 
-#Line Graphs:
+##Analyzing STDs:
+
+#Methods:
+The visualiztion that I would like to create is a graph rates of each disease type (bacteria, virus, std etc) overtime within the Bay Area. To do this, I first filtered both the group dataset and the STD dataset to only Bay Area Counties ("Alameda", "Santa Clara", "San Mateo", "San Francisco", "Marin", "Contra Costa", "Solano")
 
 ```{r, include=F}
 
