@@ -19,7 +19,7 @@ examine overall communicable disease rates and trends over time of Infectious di
   https://data.chhs.ca.gov/dataset/03e61434-7db8-4a53-a3e2-1d4d36d6848d/resource
   /75019f89-b349-4d5e-825d-8b5960fc028c/download/idb_odp_2001-2018.csv
   Name/source: CHHS Open Data
-  Number of columns: 10
+  Number of columns: 9
   Number of rows: 154,344
   Timing: The years included in this dataset is 2001 to 2018
   
@@ -619,7 +619,7 @@ combinedatafinal<-combineddata1%>%mutate(Disease_Type = case_when(Disease %in% c
 ```{r, include=F}
 data1<-combinedatafinal%>%select(-9)
 
-data1$Rate<-(data1$Cases/data1$Population)*100000
+
 
 plotdatatest<-data1%>%group_by(Disease_Type, Year)%>%summarize(Sum_cases=sum(Cases))
 
@@ -670,8 +670,8 @@ tabledataSTD<-individualdatafinal%>%filter(Sex %in% "Total")%>%group_by(Disease,
 
 newSTD<-left_join(testin, tabledataSTD, by= "Year")
 newSTD$Overall_Rate<-(newSTD$STD_case_total/newSTD$totalp)*100000
-newSTD<-newSTD%>%select(1,3,5)%>% pivot_wider(names_from="Year",values_from= "Overall_Rate")%>%select(1, 15,16,17,18,19)
-formattable(newSTD)
+newSTD1<-newSTD%>%select(1,3,5)%>% pivot_wider(names_from="Year",values_from= "Overall_Rate")%>%select(1, 15,16,17,18,19)
+formattable(newSTD1)
 
 ```
 
