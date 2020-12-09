@@ -444,7 +444,7 @@ have increased overtime. Reasons for this increase could be related to a real in
 to Fungal infections. Parasitic infections have decreased, except forthe period  2016-2018 that show an increase. Viral infection reports have increased since 2016 due to new viral reportable conditions like Zika and Chikungunya .
 
 
-```{r}
+```{r, echo =F}
 # Table for figure 2:
 figure2table <- ID_tableyears_group_total_fig2Ltake2 %>%
   select(c(ID_type,year, rate_average))
