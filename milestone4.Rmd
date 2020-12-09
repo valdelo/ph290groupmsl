@@ -364,9 +364,12 @@ kable(my_new_bayarea_table,
 ```
 
 \newpage
+
+
+
 #Figures and codes: 
-```{r}
-# Creating table for figure 1 take 2:
+```{r, echo= F}
+# Creating table for figure 1:
 ID_tableyears_group_total_fig1Ltake2 <- ID_table3californiaonly %>%
  select(c("ID_type","rate_total","time_period")) %>%
    # time_period=as.character(time_period)%>%
@@ -385,11 +388,11 @@ geom_bar(aes(fill=time_period), stat="identity", position = position_dodge()) +
   #values=c("#ffd333","#ff6600","#be0f24","#f91cc7","#910ff5","#003884")) +
 labs(x="Group of Infectious disease", y = "Average 3 year rate",
 title = "Figure 1: Trend of infectious diseases over time from 2001-2018 by type of 
-     Disease and time period (3 year averages)")
+     Disease and time period (3 year average of rate/100,000)")
 ```
+
 Figure 1 shows that of the reported infectious diseases (excluding sexually transmitted diseases) that are most commonly reported are Bacterial diseases, followed by Fungal, and then parasitic diseases. Viral diseases have a lower 
 rate. These numbers do not necessarily translates into real prevalence since 
-
 many diseases are not considered "reportable", due to their common prevalence
 and ubiquitous distribution. Ingeneral thorugh the years the frequency of
 reported bacterial, Fungal and viral diseases have increased, while Parasitic
@@ -400,8 +403,8 @@ have decreased, except for 2016-2018 that shows an increasing trend.
 
 \newpage
 
-```{r}
-#take 2 figure 2
+```{r, echo =F}
+#figure 2
 
 #Figure 2L Trends from 2001-2018 only for Bacterial, Fungal and Parasitic conditions
 ID_tableyears_group_total_fig2Ltake2 <- IDtable3 %>%
@@ -436,16 +439,14 @@ plot_ly(
 
 
 ```
-Figure 2: We could tell thet through the years, reports of bacterial diseases
+Figure 2: This figure shows that since 2001, reports of bacterial diseases
 have increased overtime. Reasons for this increase could be related to a real increase of reportable cases, versus improved report methodology. The same goes
-to Fungal infections. Prasitic infections have decreased, except for 2016-2018 
-that show an increase. Viral infection reports have increased since 2016 due to
-new viral reportable conditions like Zika and Chikungunya .
+to Fungal infections. Parasitic infections have decreased, except forthe period  2016-2018 that show an increase. Viral infection reports have increased since 2016 due to new viral reportable conditions like Zika and Chikungunya .
 
 
 
 \newpage
-```{r}
+```{r, echo=F}
 #Take 2 figure 3 #Lourdes most common bacterial diseases from 2001 to 2018:
 ID_mostcommon_bacterial_fig3Ltake2 <- IDtable3 %>%
   select(c("disease","rate","year","cases","population","sex","ID_type")) %>%
