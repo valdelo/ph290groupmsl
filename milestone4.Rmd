@@ -448,13 +448,32 @@ to Fungal infections. Parasitic infections have decreased, except forthe period 
 # Table for figure 2:
 figure2table <- ID_tableyears_group_total_fig2Ltake2 %>%
   select(c(ID_type,year, rate_average))
+
+figure2table$rate_average <- round(figure2table$rate_average ,2)
   
 figure2table_wide <- figure2table %>%
-  pivot_wider(names_from = "year",
+  pivot_wider(names_from = "ID_type",
               names_prefix = "", values_from = rate_average)
 
-```
+ kable(figure2table_wide,  booktabs = T, digits=2,
+       col.names = c("year", "bacterial", "fungal", "parasitic","viral"),
+caption="Table # 3 : Rate/100,000 of number of reportable infectious diseases per year in California during 2001-2018, by disease type") %>%
+#add latex options to scale down so it fits on the pdf:
+  kable_styling(latex_options = c("striped", "scale_down"))%>%
+  kable_styling(full_width=F) %>%
+	kable_styling(position="left") %>%
+	kable_styling(font_size=10) %>%
+	#column_spec(1, bold=TRUE) %>%
+  column_spec(1:5, width="3cm") %>%
+  collapse_rows(columns=1, valign="top") %>%
+  add_header_above(c(" "=1, "Rate/100,000"=4)) %>%
+  add_header_above(c(" "=1, "Type of Infectious Disease reported"= 4))%>%
+  footnote(general="Data from  https://data.chhs.ca.gov/dataset/infectious-disease",
+     general_title="Data Sources")
 
+
+```
+Table 3 : This table shows the values of the reported cases/100,000 by infectious disease type during 2001-2018 (same as Figure 2 )
 
 \newpage
 ```{r, echo=F}
