@@ -573,8 +573,7 @@ plot_ly(
   
   layout(
     title = "Figure 5 :Most common reported Viral Infections
-    total cases from 2001-2018 in California
-    (Excludes STD's)",
+    total cases from 2001-2018 in California (Excludes STD's)",
     xaxis = list(title = "Viral infections"),
     yaxis = list(title = "Total cases")
   )
