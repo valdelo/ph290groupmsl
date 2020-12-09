@@ -486,7 +486,7 @@ Figure 3 : Among the bacterial infections, the most commonly reported one is Cam
 
 
 
-```{r}
+```{r, echo =F}
 #Take 2 Figure 4 will create a new bar chart for most common reported Parasitic diseases rates in California
 ID_mostcommon_parasitic_fig4Ltake2 <- IDtable3 %>%
   select(c("disease","rate","year","cases","population","sex","ID_type")) %>%
@@ -516,7 +516,7 @@ plot_ly(
 Figure 4: The most common parasitic disease is Giardiasis, followed by Amebiasis
 and cryptosporidiosis.
 
-```{r}
+```{r, include =F}
 #Take 2 Figure 5  will create a new bar chart for most common reported fungal diseases rates in California
 ID_mostcommon_fungal_fig5Ltake2 <- IDtable3 %>%
   select(c("disease","rate","year","cases","population","sex","ID_type")) %>%
@@ -544,12 +544,11 @@ plot_ly(
     yaxis = list(title = "average numeber of cases per year")
   )
 ```
-Figure 5 ; Among Fungal infections, the only one reported in the last 18 years 
-was Coccidiomicosis, and the average number of yearly cases is aproximately 3590 cases reported /year
+
 
 
 \newpage
-```{r}
+```{r, echo=F}
 #take 2 Lourdes; will create a new bar chart for most common reported viral 
 #diseases in California
 ID_mostcommon_viral_fig6Ltake2 <- IDtable3 %>%
@@ -573,14 +572,14 @@ plot_ly(
 # layout(barmode="stack")%>%
   
   layout(
-    title = "Figure 6 :Most common reported Viral Infections
+    title = "Figure 5 :Most common reported Viral Infections
     total cases from 2001-2018 in California
     (Excludes STD's)",
     xaxis = list(title = "Viral infections"),
     yaxis = list(title = "Total cases")
   )
 ```
-Figure 6 : Among viral infections, the most commonly reported was Dengue virus infection. The newly described virus Chikungunya and Zika virus were not
+Figure 5 : Among viral infections, the most commonly reported was Dengue virus infection. The newly described virus Chikungunya and Zika virus were not
 reported in California until 2017
 
 
