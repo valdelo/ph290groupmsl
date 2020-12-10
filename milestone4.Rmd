@@ -700,8 +700,16 @@ tabledataSTD<-individualdatafinal%>%filter(Sex %in% "Total")%>%group_by(Disease,
 newSTD<-left_join(testin, tabledataSTD, by= "Year")
 newSTD$Overall_Rate<-(newSTD$STD_case_total/newSTD$totalp)*100000
 newSTD1<-newSTD%>%select(1,3,5)%>% pivot_wider(names_from="Year",values_from= "Overall_Rate")%>%select(1, 15,16,17,18,19)
-formattable(newSTD1)
+newSTD1$"2014"<-round(newSTD1$`2014`,2)
+newSTD1$"2015"<-round(newSTD1$`2015`,2)
+newSTD1$"2016"<-round(newSTD1$`2016`,2)
+newSTD1$"2017"<-round(newSTD1$`2017`,2)
+newSTD1$"2018"<-round(newSTD1$`2018`,2)
 
+#formattable(newSTD1)
+
+  kable(newSTD1,
+caption="Table 4: Rate (per 100,000) of STDs in the Bay Area from 2014-2018")%>% kable_styling(latex_options = "striped") 
 ```
 
 Interpretation of table: This table is a visualization of the rates of STDs in the Bay Area over the last 5 years that were included in the dataset (2014-2018). As shown in the table, rates of all three STDs are increasing significantly each year. 
