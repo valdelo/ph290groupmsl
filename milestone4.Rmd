@@ -706,10 +706,9 @@ newSTD1$"2016"<-round(newSTD1$`2016`,2)
 newSTD1$"2017"<-round(newSTD1$`2017`,2)
 newSTD1$"2018"<-round(newSTD1$`2018`,2)
 
-#formattable(newSTD1)
 
   kable(newSTD1,
 caption="Table 4: Rate (per 100,000) of STDs in the Bay Area from 2014-2018")%>% kable_styling(latex_options = "striped") 
 ```
 
-Interpretation of table: This table is a visualization of the rates of STDs in the Bay Area over the last 5 years that were included in the dataset (2014-2018). As shown in the table, rates of all three STDs are increasing significantly each year. 
+Interpretation of table: This table is a visualization of the rates of STDs in the Bay Area over the last 5 years that were included in the dataset (2014-2018). As shown in the table, rates of all three STDs are increasing significantly each year. Chlamydia rates are also much higher than rates of early syphilis and Gonorrhea
