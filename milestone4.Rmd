@@ -539,8 +539,10 @@ plot_ly(
   layout(
     title = "Figure 4 :Most common reported Parasitic Diseases
     yearly average 2001-2018 in California",
+    '<br>','<br>','<br>',
     xaxis = list(title = "Parasitic Infections"),
-    yaxis = list(title = "Average number of cases per year")
+    yaxis = list(title = "Average number of cases per year"),
+    showlegend=F
   )
 ```
 Figure 4: The most common parasitic disease is Giardiasis, followed by Amebiasis
