@@ -295,7 +295,7 @@ mutate(time_period =case_when(
 
 \newpage
 
-# Tables and codes
+# Tables and Figures
 ```{r}
 
 # Tables
