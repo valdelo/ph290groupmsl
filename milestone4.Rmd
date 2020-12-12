@@ -504,8 +504,10 @@ plot_ly(
     title = "Figure 3 :Most common reported Bacterial Infections
      average number of cases per year from 2001-2018 in California
     (Excludes STD's)",
+   # '<br','<br>','<br>','<br>','<br>',
     xaxis = list(title = "Bacterial Infections"),
-    yaxis = list(title = "Average number of cases per year")
+    yaxis = list(title = "Average number of cases per year"),
+    showlegend=F
   )
 ```
 
