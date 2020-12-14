@@ -161,7 +161,7 @@ confirmation)","Yersiniosis")
 evidence of Shiga toxin-producing E. coli (STEC)","Hemolytic Uremic Syndrome(HUS)", 
 "Shiga toxin-producing E. coli (STEC) with Hemolytic Uremic Syndrome (HUS)")
 
-# Years groups:
+# Grouping by Three Year Incriments:
 "2001-2003", "2004-2006", "2007-2009", "2010-2012", "2013-2015", "2016-2018"
 
 \newpage
