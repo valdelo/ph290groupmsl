@@ -343,22 +343,8 @@ kable(my_new_table_data,
 ```
  
 
-```{r, include=F}
-##Mai
-
-#remove me
-my_bayarea_table <- ID_tableyears_group_total %>%
-  select(c("ID_type","region","rate","time_period")) %>%
-  filter(ID_type=="Bacterial"|ID_type== "Parasitic"|ID_type=="Fungal"|ID_type=="Viral") %>%
-  filter(region=="Bay_area") %>%
-  drop_na(rate) %>%
- #group_by(ID_type, time_period)%>%
-  group_by(ID_type,time_period,region) %>%
-  summarise(cumm_rate = sum (rate))
-
-```
-
-```{r}
+```{r, echo = F}
+#MAI
 # Creating table for table 1:
 mai_ID_Table_1 <- ID_table3californiaonly %>%
  select(c("ID_type","rate_total","time_period")) %>%
@@ -385,13 +371,6 @@ kable(my_california_table,
       caption="Infectious disease rates over time in the Bay Area from 2001-2018 by etiology of 
      disease and time period (3 year cummulatives)",
       format.args=list(big.mark=","))
-
-```
-
-```{r, include=F}
-
-my_new_bayarea_table <- my_bayarea_table %>%
-  pivot_wider(names_from=c(ID_type),values_from= "cumm_rate")
 
 ```
 
