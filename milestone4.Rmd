@@ -8,11 +8,11 @@ output:
   pdf_document: default
 ---
 
-# Research questions / Problem statement:
+## Research questions / Problem statement:
 Infectious diseases are a very important public health issue, we sought to 
 examine overall communicable disease rates and trends of infectious disease reported in California overtime. Additionally, sexually transmitted infections (STI) rates will also be examined and compared separatedly to the rates of other groups of infectious diseases.
 
-# Datasets to be used:
+## Datasets to be used:
 1.Infectious Diseases by County, Year and Sex (in California) 2001-2018
    Source : https://data.chhs.ca.gov/dataset/infectious-disease
    Raw format of dataset:
@@ -56,7 +56,7 @@ id_data <- read.csv("idb_odp_2001-2018 (1) (1).csv")
 ```
 
 
-## Data Cleaning: 
+### Data Cleaning: 
 
 We looked at the dataframe from the environment plus the first five rows
 using the head function. Noticed the following:
@@ -106,7 +106,7 @@ id_data$`upper_95%_ci` <- round(id_data$`upper_95%_ci`,2)
 
 
 \newpage
-## Creating variables for data analysis:
+### Creating variables for data analysis:
 *We created new groups of variables to facilitate data presentation and analysis.
 The new groups of variables are:  
 1. Name of california region, for the 10 different California regions.
@@ -135,7 +135,7 @@ Orange County <- "ORANGE"
 San Diego and Imperial County <- "IMPERIAL", "SAN DIEGO"
 We will also have "California" as a total for the State.
 
-#### Groups of infectious diseases:
+##### Groups of infectious diseases:
 1. Parasitic <- c("Amebiasis","Babesiosis", "Cryptosporidiosis", "Cyclosporiasis",
 "Cysticercosis or Taeniasis", "Malaria", "Giardiasis", "Trichinosis")
 2. Toxin_related <- c("Botulism, Foodborne","Botulism, Other", "Botulism, Wound",
@@ -161,12 +161,12 @@ confirmation)","Yersiniosis")
 evidence of Shiga toxin-producing E. coli (STEC)","Hemolytic Uremic Syndrome(HUS)", 
 "Shiga toxin-producing E. coli (STEC) with Hemolytic Uremic Syndrome (HUS)")
 
-#### Grouping by Three Year Incriments:
+##### Grouping by Three Year Incriments:
 "2001-2003", "2004-2006", "2007-2009", "2010-2012", "2013-2015", "2016-2018"
 
 \newpage
 
-## Analytic Methods:
+### Analytic Methods:
 We are reporting descriptive data using frequency analysis.
 
 ```{r include=F}
@@ -310,7 +310,7 @@ mutate(time_period =case_when(
 \newpage
 
 
-## Results (Tables and Figures)
+### Results (Tables and Figures)
 
 ```{r, echo = F}
 #MAI
@@ -413,7 +413,7 @@ kable(my_bayarea_table,
 
 
 
-##Figures and codes: 
+### Figures and codes: 
 ```{r, echo= F}
 # Creating table for figure 1:
 ID_tableyears_group_total_fig1Ltake2 <- ID_table3californiaonly %>%
@@ -668,9 +668,9 @@ reported in California until 2017
 
 \newpage
 
-# Analyzing STIs:
+### Analyzing STIs:
 
-### Methods for Figure 6:
+#### Methods for Figure 6:
 The visualiztion that I would like to create is a graph rates of each disease type (bacteria, virus, sti etc) overtime within the Bay Area. Steps to do this were: 
 
 1. I eliminated column 10 in the STI dataset so that the columns in the two datasets had the same column names. 
@@ -736,7 +736,7 @@ bacterial rates are increasing overtime, along with STI rates.
 
 \newpage
 
-### Methods for Figure 7:
+#### Methods for Figure 7:
 
 The goal was to visual trends of STI rates within the Bay Area over the years included in the dataset 2001-2018, seperated by sex. The steps I used to accomplish this were:
 
@@ -769,7 +769,7 @@ onward, we see an even greater increase in male rates.
 
 \newpage
 
-### Methods for Table 4:
+#### Methods for Table 4:
 The goal was to visual the overall rate of each STI (Chlamydia, Gonorrhea, Syphilis) within the Bay Area over the years 2014-2018, in a table.
 These are the following steps I took to accomplish this: 
 
@@ -806,5 +806,5 @@ Interpretation of table: This table is a visualization of the rates of STIs in t
 
 \newpage
 
-## Discussion: 
+### Discussion: 
 
