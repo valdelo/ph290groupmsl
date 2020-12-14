@@ -56,6 +56,18 @@ id_data <- read.csv("idb_odp_2001-2018 (1) (1).csv")
 ```
 
 
+## Data Cleaning: 
+
+We looked at the dataframe from the environment plus the first five rows
+using the head function. Noticed the following:
+The "rate" column has a lot of "dashes" or missing values because of 0 cases
+forsome diseases. Will look at all the values to see using the function unique
+unique(id_data$rate), and other than a dash, we see empty cells and "SC". We cleaned the data by eliminating empty values ," ", "-" or NA.
+We corrected the NA values when calling the dataframe.  
+na = (c(" ","-","SC","NA"))
+
+
+
 ```{r, echo=FALSE}
 # Now will look at the dataframe from the environment plus the first five rows
 # using the head function. Noticed the following:
@@ -153,6 +165,9 @@ evidence of Shiga toxin-producing E. coli (STEC)","Hemolytic Uremic Syndrome(HUS
 "2001-2003", "2004-2006", "2007-2009", "2010-2012", "2013-2015", "2016-2018"
 
 \newpage
+
+## Analytic Methods:
+We are reporting descriptive data using frequency analysis.
 
 ```{r include=F}
 #Creating the first variable "region"
@@ -294,7 +309,8 @@ mutate(time_period =case_when(
 
 \newpage
 
-# Tables and Figures
+
+# Results (Tables and Figures)
 ```{r, echo=FALSE}
 
 # Tables
@@ -756,3 +772,8 @@ caption="Table 4: Rate (per 100,000) of STDs in the Bay Area from 2014-2018")%>%
 ```
 
 Interpretation of table: This table is a visualization of the rates of STDs in the Bay Area over the last 5 years that were included in the dataset (2014-2018). As shown in the table, rates of all three STDs are increasing significantly each year. Chlamydia rates are also much higher than rates of early syphilis and Gonorrhea
+
+\newpage
+
+## Discussion: 
+
