@@ -9,11 +9,11 @@ output:
 ---
 
 # Research questions / Problem statement:
-Infectious diseases are a very important public health issue. So we want to 
-examine overall communicable disease rates and trends over time of Infectious diseases reported in california. Sexually transmitted diseases will be analized separately from other groups of infectious diseases.
+Infectious diseases are a very important public health issue, we sought to 
+examine overall communicable disease rates and trends of infectious disease reported in California overtime. Additionally, sexually transmitted infections (STI) rates will also be examined and compared separatedly to the rates of other groups of infectious diseases.
 
-# Datasets to be used :
-1.Infectious Diseases by County, Year and Sex (in California)2001-2018
+# Datasets to be used:
+1.Infectious Diseases by County, Year and Sex (in California) 2001-2018
    Source : https://data.chhs.ca.gov/dataset/infectious-disease
    Raw format of dataset:
   https://data.chhs.ca.gov/dataset/03e61434-7db8-4a53-a3e2-1d4d36d6848d/resource
@@ -23,8 +23,8 @@ examine overall communicable disease rates and trends over time of Infectious di
   Number of rows: 154,344
   Timing: The years included in this dataset is 2001 to 2018
   
-2.STD's in California by disease, county, year and sex. Dataset: case counts
-  and rates for sexually transmitted diseases (chlamydia, gonorrhea, and all
+2.STI's in California by pathogen type, county, year and sex. Dataset: case counts
+  and rates for sexually transmitted infections (chlamydia, gonorrhea, and all
   forms of syphilis) reported for California residents.
   https://data.chhs.ca.gov/dataset/stds-in-california-by-disease-county-year-and-sex
   
@@ -106,7 +106,7 @@ id_data$`upper_95%_ci` <- round(id_data$`upper_95%_ci`,2)
 
 
 \newpage
-# Creating variables for data analysis:
+## Creating variables for data analysis:
 *We created new groups of variables to facilitate data presentation and analysis.
 The new groups of variables are:  
 1. Name of california region, for the 10 different California regions.
@@ -116,7 +116,7 @@ of disease" , following conventional microbiology classification.
 
 3. We also grouped years in groups of 3.
 
-# California regions:
+#### California regions:
 Superior <- "NEVADA","PLACER","PLUMAS","SACRAMENTO","SHASTA","SIERRA",
 "SISKIYOU","SUTTER","TEHAMA", "YOLO", "YUBA", "MODOC", "EL DORADO", "BUTTE",
 "GLENN", "LASSEN"
@@ -135,7 +135,7 @@ Orange County <- "ORANGE"
 San Diego and Imperial County <- "IMPERIAL", "SAN DIEGO"
 We will also have "California" as a total for the State.
 
-#Groups of infectious diseases:
+#### Groups of infectious diseases:
 1. Parasitic <- c("Amebiasis","Babesiosis", "Cryptosporidiosis", "Cyclosporiasis",
 "Cysticercosis or Taeniasis", "Malaria", "Giardiasis", "Trichinosis")
 2. Toxin_related <- c("Botulism, Foodborne","Botulism, Other", "Botulism, Wound",
@@ -161,7 +161,7 @@ confirmation)","Yersiniosis")
 evidence of Shiga toxin-producing E. coli (STEC)","Hemolytic Uremic Syndrome(HUS)", 
 "Shiga toxin-producing E. coli (STEC) with Hemolytic Uremic Syndrome (HUS)")
 
-# Grouping by Three Year Incriments:
+#### Grouping by Three Year Incriments:
 "2001-2003", "2004-2006", "2007-2009", "2010-2012", "2013-2015", "2016-2018"
 
 \newpage
@@ -310,7 +310,7 @@ mutate(time_period =case_when(
 \newpage
 
 
-# Results (Tables and Figures)
+## Results (Tables and Figures)
 
 ```{r, echo = F}
 #MAI
@@ -343,7 +343,7 @@ kable(my_california_table,
 
 ```
 
-```{r}
+```{r,echo=FALSE}
 #Creating dataset for table 2 (Bay area only)
 ID_table_bayarea_only <- IDtable2 %>%
     filter(sex=="TOTAL", region=="Bay_area")%>%
@@ -362,8 +362,9 @@ mutate(time_period =case_when(
     year %in% c(2016,2017,2018)~ "2016-2018",
      ))
 ```
-```
-```{r}
+
+
+```{r, echo = F}
 mai_ID_Table_2 <- ID_table_bayarea_only %>%
  select(c("ID_type","rate_total","time_period")) %>%
    # time_period=as.character(time_period) %>%
@@ -412,7 +413,7 @@ kable(my_bayarea_table,
 
 
 
-#Figures and codes: 
+##Figures and codes: 
 ```{r, echo= F}
 # Creating table for figure 1:
 ID_tableyears_group_total_fig1Ltake2 <- ID_table3californiaonly %>%
@@ -667,16 +668,16 @@ reported in California until 2017
 
 \newpage
 
-# Analyzing STDs:
+# Analyzing STIs:
 
 ### Methods for Figure 6:
-The visualiztion that I would like to create is a graph rates of each disease type (bacteria, virus, std etc) overtime within the Bay Area. Steps to do this were: 
+The visualiztion that I would like to create is a graph rates of each disease type (bacteria, virus, sti etc) overtime within the Bay Area. Steps to do this were: 
 
-1. I eliminated column 10 in the STD dataset so that the columns in the two datasets had the same column names. 
+1. I eliminated column 10 in the STI dataset so that the columns in the two datasets had the same column names. 
 2. I filtered both data sets to bay area counties only ("ALAMEDA", "SANTA CLARA", "SAN MATEO", "SAN FRANCISCO", "MARIN", "CONTRA COSTA", "SOLANO").
 3. I merged the two datasets into one dataset using rbind and converted all the county names and sex into lowercase (using tolower()).
 4. I filtered sex to total 
-5. Created a new variable known as DIsease_Type which categorized each entry into Bacteria, Virus, STD, Fungal, Protozoa, Toxin, Prion, or Infectious Complication
+5. Created a new variable known as DIsease_Type which categorized each entry into Bacteria, Virus, STI, Fungal, Protozoa, Toxin, Prion, or Infectious Complication
 6. Deleted the rate column (I created my own rate)
 7. Created a new rate per year per disease type by first grouping by Disease_Type and Year then summarized by taking the sum of Cases (sum_case) to get the total cases per year per Disease type. Then I created a new dataset by this code to get the population per year in the bay area: group_by(County, Year)%>%summarize(total_pop=mean(Population))%>%group_by(Year)%>%summarise(totalp=sum(total_pop)).Finally, I merged the above two datasets using left_join and created a new overall rate with this code:Dataset$Overall_Rate<-(Dataset$Sum_cases/Dataset$totalp)*100000
 
@@ -726,22 +727,22 @@ hope$Overall_Rate<-(hope$Sum_cases/hope$totalp)*100000
 
 
 ```{r, echo=FALSE}
-ggplot(hope, aes(x=Year, y=Overall_Rate))+facet_wrap(vars(Disease_Type), ncol = 2, scales = "free_y")+geom_line(aes(color = Disease_Type))+labs(x="Year", y="Overall Rate (per 100K)", title = "Figure 6: Overall Rates of Infectious diseases (including STDs)", subtitle =  "In Bay Area Counties from 2001-2018") + theme_minimal()
+ggplot(hope, aes(x=Year, y=Overall_Rate))+facet_wrap(vars(Disease_Type), ncol = 2, scales = "free_y")+geom_line(aes(color = Disease_Type))+labs(x="Year", y="Overall Rate (per 100K)", title = "Figure 6: Overall Rates of Infectious diseases (including STIs)", subtitle =  "In Bay Area Counties from 2001-2018") + theme_minimal()
 ```
 
 Interpretation of graph: This graph looks at the overall rates per year of 
 different types of infectious disease from 2001 to 2018 in the Bay area counties, with the Y axis adjusted. I created this graph to better visualize the trends. From the graphs it is noticeable that fungal and 
-bacterial rates are increasing overtime, along with STD rates. 
+bacterial rates are increasing overtime, along with STI rates. 
 
 \newpage
 
 ### Methods for Figure 7:
 
-The goal was to visual trends of STD rates within the Bay Area over the years included in the dataset 2001-2018, seperated by sex. The steps I used to accomplish this were:
+The goal was to visual trends of STI rates within the Bay Area over the years included in the dataset 2001-2018, seperated by sex. The steps I used to accomplish this were:
 
-1. I took the STD dataset, filtered to Bay area counties, and filtered the Sex column to rows that only contained “male” or “female”
+1. I took the STI dataset, filtered to Bay area counties, and filtered the Sex column to rows that only contained “male” or “female”
 2. Filtered out the rate column. 
-3. Created by own Overall Rate column that was the rate of all STDs per year by sex by using this code to get total number of cases per year by sex: group_by(Sex, Year)%>%summarise(case_total=sum(Cases)). Then I used the previous dataset from figure 6 that had total population per year. Finally I merged the two datasets using left_join and created a rate by taking (cases/pop)*100,000
+3. Created by own Overall Rate column that was the rate of all STIs per year by sex by using this code to get total number of cases per year by sex: group_by(Sex, Year)%>%summarise(case_total=sum(Cases)). Then I used the previous dataset from figure 6 that had total population per year. Finally I merged the two datasets using left_join and created a rate by taking (cases/pop)*100,000
 
 
 
@@ -754,26 +755,26 @@ std_set$Overall_Rate<-(std_set$case_total/std_set$totalp)*100000
 ```
 
 ```{r, echo=FALSE}
-ggplot(std_set, aes(x=Year, y=Overall_Rate))+geom_line(aes(color = Sex))+labs(x="Year", y="Overall Rate (per 100K)", title = "Figure 7: Overall rates per year of STDs (Bacterial)", subtitle="In Bay Area Counties from 2001-2018 seperated by Sex") +theme_minimal()
+ggplot(std_set, aes(x=Year, y=Overall_Rate))+geom_line(aes(color = Sex))+labs(x="Year", y="Overall Rate (per 100K)", title = "Figure 7: Overall rates per year of STIs (Bacterial)", subtitle="In Bay Area Counties from 2001-2018 seperated by Sex") +theme_minimal()
 
 
 ```
 
 Interpretation of graph: This graph looks at the Overall rates per year of 
-bacterial STD infectious disease in the Bay area counties from 2001 to 2018, seperated by Sex. I created this graph to better visualize the trends in STDs 
+bacterial STI infectious disease in the Bay area counties from 2001 to 2018, seperated by Sex. I created this graph to better visualize the trends in STIs 
 between males and females.The graphs shows a very significant increase in the 
-overall rate of STDs for both male and females. Prior to around 2014, it seems
+overall rate of STIs for both male and females. Prior to around 2014, it seems
 that female rates were higher than male rates. However from around 2014 and 
 onward, we see an even greater increase in male rates.
 
 \newpage
 
 ### Methods for Table 4:
-The goal was to visual the overall rate of each STD (Chlamydia, Gonorrhea, Syphilis) within the Bay Area over the years 2014-2018, in a table.
+The goal was to visual the overall rate of each STI (Chlamydia, Gonorrhea, Syphilis) within the Bay Area over the years 2014-2018, in a table.
 These are the following steps I took to accomplish this: 
 
-1. I took the STD dataset, filtered to Bay area counties, and filtered the Sex column to rows that only contained “total”
-2. Created by own Overall Rate column that was the rate of each STD per year: by using this code to get total number of cases of each STD per year by sex: group_by(Disease, Year)%>%summarise(STD_case_total=sum(Cases)). Then I used the previous dataset from figure 7 that had total population per year, Finally I merged the two datasets using left_join and created a rate by taking (cases/pop)*100,000
+1. I took the STI dataset, filtered to Bay area counties, and filtered the Sex column to rows that only contained “total”
+2. Created by own Overall Rate column that was the rate of each STI per year: by using this code to get total number of cases of each STI per year by sex: group_by(Disease, Year)%>%summarise(STD_case_total=sum(Cases)). Then I used the previous dataset from figure 7 that had total population per year, Finally I merged the two datasets using left_join and created a rate by taking (cases/pop)*100,000
 3. Selected Year, Disease, and Overall Rate Columns
 4. Pivoted (pivot_wider) the dataset so the years became the column and the diseases became the rows
 6. Selected the columns Disease and Years 2014-2018
@@ -798,10 +799,10 @@ newSTD1$"2018"<-round(newSTD1$`2018`,2)
 
 
   kable(newSTD1,
-caption="Table 4: Rate (per 100,000) of STDs in the Bay Area from 2014-2018")%>% kable_styling(latex_options = "striped") 
+caption="Table 4: Rate (per 100,000) of STIs in the Bay Area from 2014-2018")%>% kable_styling(latex_options = "striped") 
 ```
 
-Interpretation of table: This table is a visualization of the rates of STDs in the Bay Area over the last 5 years that were included in the dataset (2014-2018). As shown in the table, rates of all three STDs are increasing significantly each year. Chlamydia rates are also much higher than rates of early syphilis and Gonorrhea
+Interpretation of table: This table is a visualization of the rates of STIs in the Bay Area over the last 5 years that were included in the dataset (2014-2018). As shown in the table, rates of all three STIs are increasing significantly each year. Chlamydia rates are also much higher than rates of early syphilis and Gonorrhea
 
 \newpage
 
