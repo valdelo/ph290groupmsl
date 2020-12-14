@@ -319,7 +319,7 @@ my_table_data <- ID_tableyears_group_total %>%
   select(c("ID_type","region","rate","time_period")) %>%
   filter(ID_type=="Bacterial"|ID_type== "Parasitic"|ID_type=="Fungal"|ID_type=="Viral") %>%
   filter(region=="California")%>%
-  drop_na(rate) %>%
+  #drop_na(rate) %>%
   group_by(ID_type,time_period,region) %>%
   summarise(cumm_rate = sum (rate))
 ```
@@ -345,6 +345,8 @@ kable(my_new_table_data,
 
 ```{r, include=F}
 ##Mai
+
+#remove me
 my_bayarea_table <- ID_tableyears_group_total %>%
   select(c("ID_type","region","rate","time_period")) %>%
   filter(ID_type=="Bacterial"|ID_type== "Parasitic"|ID_type=="Fungal"|ID_type=="Viral") %>%
@@ -355,6 +357,37 @@ my_bayarea_table <- ID_tableyears_group_total %>%
   summarise(cumm_rate = sum (rate))
 
 ```
+
+```{r}
+# Creating table for table 1:
+mai_ID_Table_1 <- ID_table3californiaonly %>%
+ select(c("ID_type","rate_total","time_period")) %>%
+   # time_period=as.character(time_period)%>%
+  drop_na(rate_total) %>%
+  group_by(time_period, ID_type)%>%
+  mutate(average_rate=sum(rate_total)/3)%>%
+  distinct(average_rate, .keep_all = TRUE)
+
+mai_ID_Table_1 <- mai_ID_Table_1 %>%
+  select(c("ID_type","average_rate","time_period"))
+```
+
+```{r, echo=F}
+
+my_california_table <- mai_ID_Table_1 %>%
+  pivot_wider(names_from=c(ID_type),values_from= "average_rate") 
+mai_ID_Table_1$"average_rate"<-round(mai_ID_Table_1$`average_rate`,2)
+
+kable(my_california_table, 
+      booktabs=T, 
+      col.names=c("Time_Period", "Bacterial", "Fungal", "Parasitic", "Viral"),
+      align='lccc', 
+      caption="Infectious disease rates over time in the Bay Area from 2001-2018 by etiology of 
+     disease and time period (3 year cummulatives)",
+      format.args=list(big.mark=","))
+
+```
+
 ```{r, include=F}
 
 my_new_bayarea_table <- my_bayarea_table %>%
