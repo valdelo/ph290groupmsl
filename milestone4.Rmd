@@ -295,7 +295,7 @@ mutate(time_period =case_when(
 \newpage
 
 # Tables and Figures
-```{r}
+```{r, echo=FALSE}
 
 # Tables
 
@@ -317,7 +317,7 @@ my_new_table_data <- my_table_data %>%
 ```
 
 
-```{r}
+```{r, echo=F}
 kable(my_new_table_data, 
       booktabs=T, 
       col.names=c("Time Period", " ","Bacterial", "Fungal", "Parasitic", "Viral"),  
@@ -348,7 +348,7 @@ my_new_bayarea_table <- my_bayarea_table %>%
 
 \newpage
 
-```{r}
+```{r, echo=FALSE}
 # Table for  bay area only :
 kable(my_new_bayarea_table, 
       booktabs=T, 
