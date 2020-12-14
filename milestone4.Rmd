@@ -1,5 +1,5 @@
 ---
-title: "Milestone 4 and 5"
+title: "Milestone 6"
 author: "Sandya Krishna, Mai Sedki, Lourdes Valdez"
 date: "12/14/2020"
 output:
@@ -26,8 +26,7 @@ examine overall communicable disease rates and trends over time of Infectious di
 2.STD's in California by disease, county, year and sex. Dataset: case counts
   and rates for sexually transmitted diseases (chlamydia, gonorrhea, and all
   forms of syphilis) reported for California residents.
-  https://data.chhs.ca.gov/dataset/stds-in-california-by-disease-county-year-and
-  -sex
+  https://data.chhs.ca.gov/dataset/stds-in-california-by-disease-county-year-and-sex
   
   Name/Source: CHHS Open Data
   Number of Columns: 10
@@ -622,9 +621,9 @@ reported in California until 2017
 
 \newpage
 
-##Analyzing STDs:
+# Analyzing STDs:
 
-#Methods:
+### Methods for Figure 6:
 The visualiztion that I would like to create is a graph rates of each disease type (bacteria, virus, std etc) overtime within the Bay Area. Steps to do this were: 
 
 1. I eliminated column 10 in the STD dataset so that the columns in the two datasets had the same column names. 
@@ -683,18 +682,19 @@ hope$Overall_Rate<-(hope$Sum_cases/hope$totalp)*100000
 ```{r, echo=FALSE}
 ggplot(hope, aes(x=Year, y=Overall_Rate))+facet_wrap(vars(Disease_Type), ncol = 2, scales = "free_y")+geom_line(aes(color = Disease_Type))+labs(x="Year", y="Overall Rate (per 100K)", title = "Figure 6: Overall Rates of Infectious diseases (including STDs) in Bay Area Counties from 2001-2018") + theme_minimal()
 ```
+
 Interpretation of graph: This graph looks at the overall rates per year of 
 different types of infectious disease from 2001 to 2018 in the Bay area counties, with the Y axis adjusted. I created this graph to better visualize the trends. From the graphs it is noticeable that fungal and 
 bacterial rates are increasing overtime, along with STD rates. 
 
 \newpage
 
-#Methods:
+### Methods for Figure 7:
 
 The goal was to visual trends of STD rates within the Bay Area over the years included in the dataset 2001-2018, seperated by sex. The steps I used to accomplish this were:
 
 1. I took the STD dataset, filtered to Bay area counties, and filtered the Sex column to rows that only contained “male” or “female”
-2. Filtered out the rate column
+2. Filtered out the rate column. 
 3. Created by own Overall Rate column that was the rate of all STDs per year by sex by using this code to get total number of cases per year by sex: group_by(Sex, Year)%>%summarise(case_total=sum(Cases)). Then I used the previous dataset from figure 6 that had total population per year. Finally I merged the two datasets using left_join and created a rate by taking (cases/pop)*100,000
 
 
@@ -712,6 +712,7 @@ ggplot(std_set, aes(x=Year, y=Overall_Rate))+geom_line(aes(color = Sex))+labs(x=
 
 
 ```
+
 Interpretation of graph: This graph looks at the Overall rates per year of 
 bacterial STD infectious disease in the Bay area counties from 2001 to 2018, seperated by Sex. I created this graph to better visualize the trends in STDs 
 between males and females.The graphs shows a very significant increase in the 
@@ -721,9 +722,10 @@ onward, we see an even greater increase in male rates.
 
 \newpage
 
-#Methods:
+### Methods for Table 4:
 The goal was to visual the overall rate of each STD (Chlamydia, Gonorrhea, Syphilis) within the Bay Area over the years 2014-2018, in a table.
 These are the following steps I took to accomplish this: 
+
 1. I took the STD dataset, filtered to Bay area counties, and filtered the Sex column to rows that only contained “total”
 2. Created by own Overall Rate column that was the rate of each STD per year: by using this code to get total number of cases of each STD per year by sex: group_by(Disease, Year)%>%summarise(STD_case_total=sum(Cases)). Then I used the previous dataset from figure 7 that had total population per year, Finally I merged the two datasets using left_join and created a rate by taking (cases/pop)*100,000
 3. Selected Year, Disease, and Overall Rate Columns
