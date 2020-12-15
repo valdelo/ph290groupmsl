@@ -344,7 +344,7 @@ kable(my_california_table,
 
 ```
 Interpretation: This table shows the average rate of disease per 100,000 in all California regions over time grouped by 3 year increments. 
-```{r,echo=FALSE}
+```{r,echo=FALSE, message=FALSE}
 #Creating dataset for table 2 (Bay area only)
 ID_table_bayarea_only <- IDtable2 %>%
     filter(sex=="TOTAL", region=="Bay_area")%>%
@@ -402,7 +402,7 @@ Interpretation: This table shows the average rate of disease per 100,000 in with
 
 
 ### Figures and codes: 
-```{r, echo= F}
+```{r, echo= F, warning=FALSE, message=FALSE}
 # Creating table for figure 1:
 ID_tableyears_group_total_fig1Ltake2 <- ID_table3californiaonly %>%
  select(c("ID_type","rate_total","time_period")) %>%
