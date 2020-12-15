@@ -34,7 +34,7 @@ examine overall communicable disease rates and trends of infectious disease repo
   Timing: The years included in this dataset is 2001 to 2018
   
 ```{r setup, include=F}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message= FALSE)
 ```
 
 ```{r, include=FALSE}
