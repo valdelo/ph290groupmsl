@@ -329,9 +329,10 @@ mai_ID_Table_1 <- mai_ID_Table_1 %>%
 
 ```{r, echo=F}
 
+mai_ID_Table_1$"average_rate"<-round(mai_ID_Table_1$`average_rate`,2)
 my_california_table <- mai_ID_Table_1 %>%
   pivot_wider(names_from=c(ID_type),values_from= "average_rate") 
-mai_ID_Table_1$"average_rate"<-round(mai_ID_Table_1$`average_rate`,2)
+
 
 kable(my_california_table, 
       booktabs=T, 
@@ -379,9 +380,11 @@ mai_ID_Table_2 <- mai_ID_Table_2 %>%
 
 ```{r, echo=F}
 
+mai_ID_Table_2$"average_rate"<-round(mai_ID_Table_2$`average_rate`,2)
+
 my_bayarea_table <- mai_ID_Table_2 %>%
   pivot_wider(names_from=c(ID_type),values_from= "average_rate") 
-mai_ID_Table_2$"average_rate"<-round(mai_ID_Table_2$`average_rate`,2)
+
 
 kable(my_bayarea_table, 
       booktabs=T, 
